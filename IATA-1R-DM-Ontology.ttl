@@ -1162,6 +1162,14 @@ liveAnimalsEpermit:signatures rdf:type owl:ObjectProperty ;
                               rdfs:label "liveAnimalsEpermit:signatures"@en .
 
 
+###  https://onerecord.iata.org/cargo/LoadingActivity#forTransportMovements
+loadingActivity:forTransportMovements rdf:type owl:ObjectProperty ;
+                                      rdfs:domain :LoadingActivity ;
+                                      rdfs:range :TransportMovement ;
+                                      rdfs:comment "References to the TransportMovements the LoadingActivity was performed for" ;
+                                      rdfs:label "loadingActivity:forTransportMovements" .
+
+
 ###  https://onerecord.iata.org/cargo/LoadingActivity#loadedObject
 loadingActivity:loadedObject rdf:type owl:ObjectProperty ;
                              rdfs:domain :LoadingActivity ;
@@ -8659,6 +8667,10 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
 ###  https://onerecord.iata.org/cargo/LoadingActivity
 :LoadingActivity rdf:type owl:Class ;
                  rdfs:subClassOf :LogisticsActivity ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty loadingActivity:forTransportMovements ;
+                                   owl:allValuesFrom :TransportMovement
+                                 ] ,
                                  [ rdf:type owl:Restriction ;
                                    owl:onProperty loadingActivity:loadedObject ;
                                    owl:allValuesFrom [ rdf:type owl:Class ;
