@@ -117,7 +117,7 @@
                                      dc:description "The IATA ONE Record vocabulary, described using W3C RDF Schema and the Web Ontology Language."@en ;
                                      dc:title "IATA ONE Record Ontology"@en ;
                                      terms:abstract "The ontology of the IATA ONE Record standard is the core data model underlying the Linked Data solution drafted by the ONE Record standard: https://github.com/IATA-Cargo/ONE-Record. ONE Record is a standard for data sharing and creates a single record view of the shipment. This standard defines a common data model for the data that is shared via standardized and secured web API."@en ;
-                                     terms:modified "16-02-2023" ;
+                                     terms:modified "20-02-2023" ;
                                      terms:title "IATA ONE Record Ontology"@en ;
                                      rdfs:comment """Details availalble on GitHub https://github.com/IATA-Cargo/ONE-Record
 Version 2.0.0
@@ -392,12 +392,6 @@ bookingOption:transportMovement rdf:type owl:ObjectProperty ;
                                 rdfs:comment "Transport segment linked to the offer, including the Departure and Arrival locations"@en ;
                                 rdfs:label "bookingOption:transportMovement"@en ;
                                 owl:deprecated "true"^^xsd:boolean .
-
-
-###  https://onerecord.iata.org/cargo/BookingOption#waybillNumber
-bookingOption:waybillNumber rdf:type owl:ObjectProperty ;
-                            rdfs:domain :BookingOption ;
-                            rdfs:range :Waybill .
 
 
 ###  https://onerecord.iata.org/cargo/BookingOptionRequest#bookingOptions
@@ -2803,7 +2797,9 @@ bookingOption:shipmentSecurityStatus rdf:type owl:DatatypeProperty ;
 ###  https://onerecord.iata.org/cargo/BookingOption#waybillNumber
 bookingOption:waybillNumber rdf:type owl:DatatypeProperty ;
                             rdfs:domain :BookingOption ;
-                            rdfs:range xsd:string .
+                            rdfs:range xsd:string ;
+                            rdfs:comment "String containing the proposed waybill number for the BookingOption"@en ;
+                            rdfs:label "bookingOption:waybillNumber"@en .
 
 
 ###  https://onerecord.iata.org/cargo/BookingOptionRequest#allotment
@@ -6668,10 +6664,6 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                  owl:allValuesFrom :Shipment
                                ] ,
                                [ rdf:type owl:Restriction ;
-                                 owl:onProperty bookingOption:waybillNumber ;
-                                 owl:allValuesFrom :Waybill
-                               ] ,
-                               [ rdf:type owl:Restriction ;
                                  owl:onProperty bookingOption:bookingRequest ;
                                  owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                ] ,
@@ -6705,10 +6697,6 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                ] ,
                                [ rdf:type owl:Restriction ;
                                  owl:onProperty bookingOption:shipmentDetails ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty bookingOption:waybillNumber ;
                                  owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                ] ,
                                [ rdf:type owl:Restriction ;
@@ -6753,6 +6741,10 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                ] ,
                                [ rdf:type owl:Restriction ;
                                  owl:onProperty bookingOption:shipmentSecurityStatus ;
+                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty bookingOption:waybillNumber ;
                                  owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                ] ;
                rdfs:comment "Booking details"@en ;
@@ -11622,11 +11614,6 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
 #################################################################
 #    Annotations
 #################################################################
-
-bookingOption:waybillNumber rdfs:label "bookingOption:waybillNumber"@en ;
-                            rdfs:comment "String containing the proposed waybill number for the BookingOption"@en ,
-                                         "House or Master Waybill unique identifier"@en .
-
 
 shipment:deliveryLocation rdfs:comment "Name and UN/LOCODE code of the point or port of departure, shipment or destination, as required under the applicable delivery term"@en ;
                           rdfs:label "shipment:deliveryLocation"@en .
