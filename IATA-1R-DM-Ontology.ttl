@@ -7,7 +7,6 @@
 @prefix item: <https://onerecord.iata.org/cargo/Item#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix actor: <https://onerecord.iata.org/cargo/Actor#> .
-@prefix check: <https://onerecord.iata.org/cargo/Check#> .
 @prefix party: <https://onerecord.iata.org/cargo/Party#> .
 @prefix piece: <https://onerecord.iata.org/cargo/Piece#> .
 @prefix price: <https://onerecord.iata.org/cargo/Price#> .
@@ -23,11 +22,13 @@
 @prefix carrier: <https://onerecord.iata.org/cargo/Carrier#> .
 @prefix company: <https://onerecord.iata.org/cargo/Company#> .
 @prefix country: <https://onerecord.iata.org/cargo/Country#> .
+@prefix loading: <https://onerecord.iata.org/cargo/Loading#> .
 @prefix pieceDg: <https://onerecord.iata.org/cargo/PieceDg#> .
 @prefix product: <https://onerecord.iata.org/cargo/Product#> .
 @prefix ratings: <https://onerecord.iata.org/cargo/Ratings#> .
 @prefix request: <https://onerecord.iata.org/cargo/Request#> .
 @prefix routing: <https://onerecord.iata.org/cargo/Routing#> .
+@prefix storing: <https://onerecord.iata.org/cargo/Storing#> .
 @prefix waybill: <https://onerecord.iata.org/cargo/Waybill#> .
 @prefix eventUld: <https://onerecord.iata.org/cargo/EventUld#> .
 @prefix location: <https://onerecord.iata.org/cargo/Location#> .
@@ -50,7 +51,6 @@
 @prefix bookingOption: <https://onerecord.iata.org/cargo/BookingOption#> .
 @prefix checkTemplate: <https://onerecord.iata.org/cargo/CheckTemplate#> .
 @prefix commonObjects: <https://onerecord.iata.org/cargo/CommonObjects#> .
-@prefix commonService: <https://onerecord.iata.org/cargo/CommonService#> .
 @prefix companyBranch: <https://onerecord.iata.org/cargo/CompanyBranch#> .
 @prefix contactDetail: <https://onerecord.iata.org/cargo/ContactDetail#> .
 @prefix dgDeclaration: <https://onerecord.iata.org/cargo/DgDeclaration#> .
@@ -70,17 +70,15 @@
 @prefix movementAction: <https://onerecord.iata.org/cargo/MovementAction#> .
 @prefix transportMeans: <https://onerecord.iata.org/cargo/TransportMeans#> .
 @prefix bookingShipment: <https://onerecord.iata.org/cargo/BookingShipment#> .
-@prefix complexActivity: <https://onerecord.iata.org/cargo/ComplexActivity#> .
 @prefix embeddedObjects: <https://onerecord.iata.org/cargo/EmbeddedObjects#> .
-@prefix loadingActivity: <https://onerecord.iata.org/cargo/LoadingActivity#> .
 @prefix loadingMaterial: <https://onerecord.iata.org/cargo/LoadingMaterial#> .
 @prefix logisticsAction: <https://onerecord.iata.org/cargo/LogisticsAction#> .
 @prefix logisticsObject: <https://onerecord.iata.org/cargo/LogisticsObject#> .
 @prefix otherIdentifier: <https://onerecord.iata.org/cargo/OtherIdentifier#> .
 @prefix publicAuthority: <https://onerecord.iata.org/cargo/PublicAuthority#> .
 @prefix regulatedEntity: <https://onerecord.iata.org/cargo/RegulatedEntity#> .
-@prefix storingActivity: <https://onerecord.iata.org/cargo/StoringActivity#> .
 @prefix unitComposition: <https://onerecord.iata.org/cargo/UnitComposition#> .
+@prefix activitySequence: <https://onerecord.iata.org/cargo/ActivitySequence#> .
 @prefix checkTotalResult: <https://onerecord.iata.org/cargo/CheckTotalResult#> .
 @prefix epermitSignature: <https://onerecord.iata.org/cargo/EpermitSignature#> .
 @prefix logisticsService: <https://onerecord.iata.org/cargo/LogisticsService#> .
@@ -95,10 +93,8 @@
 @prefix epermitConsignment: <https://onerecord.iata.org/cargo/EpermitConsignment#> .
 @prefix liveAnimalsEpermit: <https://onerecord.iata.org/cargo/LiveAnimalsEpermit#> .
 @prefix measurementsGeoloc: <https://onerecord.iata.org/cargo/MeasurementsGeoloc#> .
-@prefix specialInstruction: <https://onerecord.iata.org/cargo/SpecialInstruction#> .
 @prefix securityDeclaration: <https://onerecord.iata.org/cargo/SecurityDeclaration#> .
 @prefix bookingOptionRequest: <https://onerecord.iata.org/cargo/BookingOptionRequest#> .
-@prefix commonServiceRequest: <https://onerecord.iata.org/cargo/CommonServiceRequest#> .
 @prefix dgProductRadioactive: <https://onerecord.iata.org/cargo/DgProductRadioactive#> .
 @prefix dgRadioactiveIsotope: <https://onerecord.iata.org/cargo/DgRadioactiveIsotope#> .
 @prefix handlingInstructions: <https://onerecord.iata.org/cargo/HandlingInstructions#> .
@@ -109,7 +105,7 @@
                                      dc:description "The IATA ONE Record vocabulary, described using W3C RDF Schema and the Web Ontology Language."@en ;
                                      dc:title "IATA ONE Record Ontology"@en ;
                                      terms:abstract "The ontology of the IATA ONE Record standard is the core data model underlying the Linked Data solution drafted by the ONE Record standard: https://github.com/IATA-Cargo/ONE-Record. ONE Record is a standard for data sharing and creates a single record view of the shipment. This standard defines a common data model for the data that is shared via standardized and secured web API."@en ;
-                                     terms:modified "01-03-2023" ;
+                                     terms:modified "23-03-2023" ;
                                      terms:title "IATA ONE Record Ontology"@en ;
                                      rdfs:comment """Details availalble on GitHub https://github.com/IATA-Cargo/ONE-Record
 Version 2.0.0
@@ -129,17 +125,16 @@ Version 2.1.2
 - Added properties Waybill#billingDetails, BookingOption#bookingRequest, Routing#bookingOptionRequest, and  BookingOptionRequest#bookingShipmentDetails as backlinks
 - Deprecated unused properties
 - Multiple minor fixes to Distribution objects
-Version 3.0.0 RC 2
+Version 3.0.0 RC 3
 - Homogenization of class and property names, prefixes and general bugfixes; aligned with IATA and DTAC
-- Implementation of superclass structure, including LogisticsActivities and LogisticsServices and LogisticsAgents as discussed in DMWG workshop January 23/24th 202
-- Implementation of LogisticsActivities as discussed in DMWG workshop January 23/24th 2023; aligned with IATA, DTAC and Geodis
+- Implementation of superclass structure, including LogisticsAgents as discussed in DMWG workshop January 23/24th 202
+- Implementation of LogisticsActivities, LogisticsActions and LogisticsService as discussed in DMWG workshop March 20/21st 2023; aligned with IATA, DTAC and Geodis
 - Implementation of LoadingMaterial
-- Implementation of LogisticsServices based on SDL approach - not discussed yet
 - Removal of all minCardinalityConstraints
 - Minor bugfixes"""@en ;
                                      rdfs:isDefinedBy "https://www.iata.org/one-record/"^^xsd:anyURI ;
                                      rdfs:label "IATA ONE Record Ontology"@en ;
-                                     owl:versionInfo "3.0.0 RC 2"@en .
+                                     owl:versionInfo "3.0.0 RC 3"@en .
 
 #################################################################
 #    Annotation properties
@@ -192,6 +187,14 @@ owl:thing rdf:type rdfs:Datatype .
 #################################################################
 #    Object Properties
 #################################################################
+
+###  https://onerecord.iata.org/cargo/ActivitySequence#activity
+activitySequence:activity rdf:type owl:ObjectProperty ;
+                          rdfs:domain :ActivitySequence ;
+                          rdfs:range :LogisticsActivity ;
+                          rdfs:comment "Reference to the Activity that is performed as part of a Service"@en ;
+                          rdfs:label "activitySequence:activity"@en .
+
 
 ###  https://onerecord.iata.org/cargo/Actor#associatedOrganization
 actor:associatedOrganization rdf:type owl:ObjectProperty ;
@@ -612,28 +615,20 @@ characteristic:ofProduct rdf:type owl:ObjectProperty ;
                          owl:versionInfo "v3.0 renamed from characteristic:product"@en .
 
 
-###  https://onerecord.iata.org/cargo/Check#checkExecution
-check:checkExecution rdf:type owl:ObjectProperty ;
-                     rdfs:domain :Check ;
-                     rdfs:range :CheckAction ;
-                     rdfs:comment "References to all CheckActions to be executed for this Check"@en ;
-                     rdfs:label "check:checkExecution"@en .
-
-
-###  https://onerecord.iata.org/cargo/Check#checkedObject
-check:checkedObject rdf:type owl:ObjectProperty ;
-                    rdfs:domain :Check ;
-                    rdfs:range :LogisticsObject ;
-                    rdfs:comment "Reference to the LogisticsObject that is checked"@en ;
-                    rdfs:label "check:checkedObject"@en .
-
-
 ###  https://onerecord.iata.org/cargo/CheckAction#checkTotalResult
 checkAction:checkTotalResult rdf:type owl:ObjectProperty ;
                              rdfs:domain :CheckAction ;
                              rdfs:range :CheckTotalResult ;
-                             rdfs:comment "Reference to the CheckTotalResult holding the result of the CheckAction"@en ;
+                             rdfs:comment "Reference to the result of the Check"@en ;
                              rdfs:label "checkAction:checkTotalResult"@en .
+
+
+###  https://onerecord.iata.org/cargo/CheckAction#checkedObject
+checkAction:checkedObject rdf:type owl:ObjectProperty ;
+                          rdfs:domain :CheckAction ;
+                          rdfs:range :LogisticsObject ;
+                          rdfs:comment "Reference to the checked Object"@en ;
+                          rdfs:label "checkAction:checkedObject"@en .
 
 
 ###  https://onerecord.iata.org/cargo/CheckAction#checker
@@ -648,7 +643,7 @@ checkAction:checker rdf:type owl:ObjectProperty ;
 checkAction:usedTemplate rdf:type owl:ObjectProperty ;
                          rdfs:domain :CheckAction ;
                          rdfs:range :CheckTemplate ;
-                         rdfs:comment "Reference to the CheckTemplate used in the CheckAction"@en ;
+                         rdfs:comment "Reference to the Template used in the Check"@en ;
                          rdfs:label "checkAction:usedTemplate"@en .
 
 
@@ -676,14 +671,6 @@ checkTemplate:questions rdf:type owl:ObjectProperty ;
                         rdfs:label "checkTemplate:questions"@en .
 
 
-###  https://onerecord.iata.org/cargo/CheckTemplate#usedInCheckAction
-checkTemplate:usedInCheckAction rdf:type owl:ObjectProperty ;
-                                rdfs:domain :CheckTemplate ;
-                                rdfs:range :CheckAction ;
-                                rdfs:comment "Reference to the CheckAction the CheckTemplate is used in" ;
-                                rdfs:label "checkTemplate:usedInCheckAction" .
-
-
 ###  https://onerecord.iata.org/cargo/CheckTotalResult#certifiedBy
 checkTotalResult:certifiedBy rdf:type owl:ObjectProperty ;
                              rdfs:domain :CheckTotalResult ;
@@ -692,132 +679,12 @@ checkTotalResult:certifiedBy rdf:type owl:ObjectProperty ;
                              rdfs:label "checkTotalResult:certifiedBy"@en .
 
 
-###  https://onerecord.iata.org/cargo/CheckTotalResult#ofCheckAction
-checkTotalResult:ofCheckAction rdf:type owl:ObjectProperty ;
-                               rdfs:domain :CheckTotalResult ;
-                               rdfs:range :CheckAction ;
-                               rdfs:comment "Reference to the CheckAction for which the CheckTotalResult is the result"@en ;
-                               rdfs:label "checkTotalResult:ofCheckAction"@en .
-
-
 ###  https://onerecord.iata.org/cargo/CheckTotalResult#resultValue
 checkTotalResult:resultValue rdf:type owl:ObjectProperty ;
                              rdfs:domain :CheckTotalResult ;
                              rdfs:range :Value ;
                              rdfs:comment "Information about a result Value of any kind of the Check"@en ;
                              rdfs:label "checkTotalResult:resultValue"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService#finalLocation
-commonService:finalLocation rdf:type owl:ObjectProperty ;
-                            rdfs:domain :CommonService ;
-                            rdfs:range :Location ;
-                            rdfs:comment "Reference to the final Location of the Service if required"@en ;
-                            rdfs:label "commonService:finalLocation"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService#originLocation
-commonService:originLocation rdf:type owl:ObjectProperty ;
-                             rdfs:domain :CommonService ;
-                             rdfs:range :Location ;
-                             rdfs:comment "Reference to the Location of origin for the service if required"@en ;
-                             rdfs:label "commonService:originLocation"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService#requestReference
-commonService:requestReference rdf:type owl:ObjectProperty ;
-                               rdfs:domain :CommonService ;
-                               rdfs:range :CommonServiceRequest ;
-                               rdfs:comment "Reference to the CommonServiceRequest this Service is to be performed for"@en ;
-                               rdfs:label "commonService:requestReference"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService#requestor
-commonService:requestor rdf:type owl:ObjectProperty ;
-                        rdfs:domain :CommonService ;
-                        rdfs:range :Party ;
-                        rdfs:comment "Information about the requestor with reference to the Organization"@en ;
-                        rdfs:label "commonService:requestor"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#contactPersons
-commonServiceRequest:contactPersons rdf:type owl:ObjectProperty ;
-                                    rdfs:domain :CommonServiceRequest ;
-                                    rdfs:range :Person ;
-                                    rdfs:comment "References to Persons serving as contact for the CommonServiceRequest"@en ;
-                                    rdfs:label "commonServiceRequest:contactPersons"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#finalLocation
-commonServiceRequest:finalLocation rdf:type owl:ObjectProperty ;
-                                   rdfs:domain :CommonServiceRequest ;
-                                   rdfs:range :Location ;
-                                   rdfs:comment "Reference to the requested final Location if required"@en ;
-                                   rdfs:label "commonServiceRequest:finalLocation"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#originLocation
-commonServiceRequest:originLocation rdf:type owl:ObjectProperty ;
-                                    rdfs:domain :CommonServiceRequest ;
-                                    rdfs:range :Location ;
-                                    rdfs:comment "Reference to the requested Location of origin if required"@en ;
-                                    rdfs:label "commonServiceRequest:originLocation"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#parentActivity
-commonServiceRequest:parentActivity rdf:type owl:ObjectProperty ;
-                                    rdfs:domain :CommonServiceRequest ;
-                                    rdfs:range :LogisticsActivity ;
-                                    rdfs:comment "Reference to the Activity the CommonServiceRequest was issued for"@en ;
-                                    rdfs:label "commonServiceRequest:parentActivity"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#provider
-commonServiceRequest:provider rdf:type owl:ObjectProperty ;
-                              rdfs:domain :CommonServiceRequest ;
-                              rdfs:range :Party ;
-                              rdfs:comment "Information about the provider of the requested Service with reference to the Organization if required"@en ;
-                              rdfs:label "commonServiceRequest:provider"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#requestedActions
-commonServiceRequest:requestedActions rdf:type owl:ObjectProperty ;
-                                      rdfs:domain :CommonServiceRequest ;
-                                      rdfs:range :LogisticsAction ;
-                                      rdfs:comment "References to requested LogisticsActions"@en ;
-                                      rdfs:label "commonServiceRequest:requestedActions"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#requestor
-commonServiceRequest:requestor rdf:type owl:ObjectProperty ;
-                               rdfs:domain :CommonServiceRequest ;
-                               rdfs:range :Party ;
-                               rdfs:comment "Information about the requestor with reference to the Organization"@en ;
-                               rdfs:label "commonServiceRequest:requestor"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#serviceOptions
-commonServiceRequest:serviceOptions rdf:type owl:ObjectProperty ;
-                                    rdfs:domain :CommonServiceRequest ;
-                                    rdfs:range :CommonService ;
-                                    rdfs:comment "References to the CommonServices offered for the CommonServiceRequest"@en ;
-                                    rdfs:label "commonServiceRequest:serviceOptions"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#specialCharacteristics
-commonServiceRequest:specialCharacteristics rdf:type owl:ObjectProperty ;
-                                            rdfs:domain :CommonServiceRequest ;
-                                            rdfs:range :Characteristic ;
-                                            rdfs:comment "Information about Characteristics of the Service"@en ;
-                                            rdfs:label "commonServiceRequest:specialCharacteristics"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#specialInstructions
-commonServiceRequest:specialInstructions rdf:type owl:ObjectProperty ;
-                                         rdfs:domain :CommonServiceRequest ;
-                                         rdfs:range :SpecialInstruction ;
-                                         rdfs:comment "Information about Special Instructions for the requested Service"@en ;
-                                         rdfs:label "commonServiceRequest:specialInstructions"@en .
 
 
 ###  https://onerecord.iata.org/cargo/Company#branch
@@ -868,36 +735,28 @@ companyBranch:otherIdentifiers rdf:type owl:ObjectProperty ;
                                owl:versionInfo "v1.1 renamed to otherIdentifiers"@en .
 
 
-###  https://onerecord.iata.org/cargo/ComplexActivity#DelegatedServiceRequests
-complexActivity:DelegatedServiceRequests rdf:type owl:ObjectProperty ;
-                                         rdfs:domain :ComplexActivity ;
-                                         rdfs:range :CommonServiceRequest ;
-                                         rdfs:comment "References to the ServiceRequests if the parts of the ComplexActivity are delegated to another Party"@en ;
-                                         rdfs:label "complexActivity:DelegatedServiceRequests"@en .
+###  https://onerecord.iata.org/cargo/CompositionAction#composedMaterials
+compositionAction:composedMaterials rdf:type owl:ObjectProperty ;
+                                    rdfs:domain :CompositionAction ;
+                                    rdfs:range :LoadingMaterial ;
+                                    rdfs:comment "References to the Materials being built-up or broken-down"@en ;
+                                    rdfs:label "compositionAction:composedMaterials"@en .
 
 
-###  https://onerecord.iata.org/cargo/ComplexActivity#execution
-complexActivity:execution rdf:type owl:ObjectProperty ;
-                          rdfs:domain :ComplexActivity ;
-                          rdfs:range :LogisticsAction ;
-                          rdfs:comment "References to all Actions to be executed for the ComplexActivity"@en ;
-                          rdfs:label "complexActivity:execution"@en .
+###  https://onerecord.iata.org/cargo/CompositionAction#composedPieces
+compositionAction:composedPieces rdf:type owl:ObjectProperty ;
+                                 rdfs:domain :CompositionAction ;
+                                 rdfs:range :Piece ;
+                                 rdfs:comment "References to the Pieces being built-up or broken-down"@en ;
+                                 rdfs:label "compositionAction:composedPieces"@en .
 
 
-###  https://onerecord.iata.org/cargo/ComplexActivity#involvedObjects
-complexActivity:involvedObjects rdf:type owl:ObjectProperty ;
-                                rdfs:domain :ComplexActivity ;
-                                rdfs:range :PhysicalLogisticsObject ;
-                                rdfs:comment "References to all LogisticsObjects that are part of the ComplexActivity"@en ;
-                                rdfs:label "complexActivity:involvedObjects"@en .
-
-
-###  https://onerecord.iata.org/cargo/ComplexActivity#transportMeans
-complexActivity:transportMeans rdf:type owl:ObjectProperty ;
-                               rdfs:domain :ComplexActivity ;
-                               rdfs:range :TransportMeans ;
-                               rdfs:comment "Reference to the TransportMean that is part of the ComplexActivity if any"@en ;
-                               rdfs:label "complexActivity:transportMeans"@en .
+###  https://onerecord.iata.org/cargo/CompositionAction#loadingUnit
+compositionAction:loadingUnit rdf:type owl:ObjectProperty ;
+                              rdfs:domain :CompositionAction ;
+                              rdfs:range :LoadingUnit ;
+                              rdfs:comment "Reference to the LoadingUnit being built-up or broken-down"@en ;
+                              rdfs:label "compositionAction:loadingUnit"@en .
 
 
 ###  https://onerecord.iata.org/cargo/CustomsInformation#issuedForPiece
@@ -1223,41 +1082,44 @@ liveAnimalsEpermit:signatures rdf:type owl:ObjectProperty ;
                               rdfs:label "liveAnimalsEpermit:signatures"@en .
 
 
-###  https://onerecord.iata.org/cargo/LoadingActivity#forTransportMovements
-loadingActivity:forTransportMovements rdf:type owl:ObjectProperty ;
-                                      rdfs:domain :LoadingActivity ;
-                                      rdfs:range :TransportMovement ;
-                                      rdfs:comment "References to the TransportMovements the LoadingActivity was performed for" ;
-                                      rdfs:label "loadingActivity:forTransportMovements" .
+###  https://onerecord.iata.org/cargo/Loading#loadingActions
+loading:loadingActions rdf:type owl:ObjectProperty ;
+                       rdfs:domain :Loading ;
+                       rdfs:range :LoadingAction ;
+                       rdfs:comment "References to all LoadingActions performed for the Loading Activity"@en ;
+                       rdfs:label "loading:loadingActions"@en .
 
 
-###  https://onerecord.iata.org/cargo/LoadingActivity#loadedObject
-loadingActivity:loadedObject rdf:type owl:ObjectProperty ;
-                             rdfs:domain :LoadingActivity ;
-                             rdfs:range [ rdf:type owl:Class ;
-                                          owl:unionOf ( :LoadingMaterial
-                                                        :LoadingUnit
-                                                        :Piece
-                                                      )
-                                        ] ;
-                             rdfs:comment "Reference to the loaded Piece, LoadingUnit or LoadingMaterial"@en ;
-                             rdfs:label "loadingActivity:loadedObject"@en .
+###  https://onerecord.iata.org/cargo/LoadingAction#loadedMaterials
+loadingAction:loadedMaterials rdf:type owl:ObjectProperty ;
+                              rdfs:domain :LoadingAction ;
+                              rdfs:range :LoadingMaterial ;
+                              rdfs:comment "References to Materials onloaded or offloaded"@en ;
+                              rdfs:label "loadingAction:loadedMaterials"@en .
 
 
-###  https://onerecord.iata.org/cargo/LoadingActivity#loadingExecution
-loadingActivity:loadingExecution rdf:type owl:ObjectProperty ;
-                                 rdfs:domain :LoadingActivity ;
-                                 rdfs:range :LoadingAction ;
-                                 rdfs:comment "References to all LoadingActions to be executed in the LoadingActivity"@en ;
-                                 rdfs:label "loadingActivity:loadingExecution"@en .
+###  https://onerecord.iata.org/cargo/LoadingAction#loadedPieces
+loadingAction:loadedPieces rdf:type owl:ObjectProperty ;
+                           rdfs:domain :LoadingAction ;
+                           rdfs:range :Piece ;
+                           rdfs:comment "References to Pieces onloaded or offloaded"@en ;
+                           rdfs:label "loadingAction:loadedPieces"@en .
 
 
-###  https://onerecord.iata.org/cargo/LoadingActivity#transportMeans
-loadingActivity:transportMeans rdf:type owl:ObjectProperty ;
-                               rdfs:domain :LoadingActivity ;
-                               rdfs:range :TransportMeans ;
-                               rdfs:comment "Reference to the TransportMeans the loading is performed on"@en ;
-                               rdfs:label "loadingActivity:transportMeans"@en .
+###  https://onerecord.iata.org/cargo/LoadingAction#loadedUnits
+loadingAction:loadedUnits rdf:type owl:ObjectProperty ;
+                          rdfs:domain :LoadingAction ;
+                          rdfs:range :LoadingUnit ;
+                          rdfs:comment "References to LoadingUnits onloaded or offloaded"@en ;
+                          rdfs:label "loadingAction:loadedUnits"@en .
+
+
+###  https://onerecord.iata.org/cargo/LoadingAction#transportMeans
+loadingAction:transportMeans rdf:type owl:ObjectProperty ;
+                             rdfs:domain :LoadingAction ;
+                             rdfs:range :TransportMeans ;
+                             rdfs:comment "Reference to the TransportMeans that is being onloaded or offloaded"@en ;
+                             rdfs:label "loadingAction:transportMeans"@en .
 
 
 ###  https://onerecord.iata.org/cargo/LoadingMaterial#manufacturer
@@ -1307,7 +1169,6 @@ loadingUnit:tareWeight rdf:type owl:ObjectProperty ;
 ###  https://onerecord.iata.org/cargo/LoadingUnit#transportMovements
 loadingUnit:transportMovements rdf:type owl:ObjectProperty ;
                                rdfs:domain :LoadingUnit ;
-                               rdfs:range :TransportMovement ;
                                rdfs:comment "Transport Movements on which the ULD are transported"@en ;
                                rdfs:label "loadingUnit:transportMovements"@en ;
                                owl:deprecated "true"@en .
@@ -1321,6 +1182,14 @@ location:address rdf:type owl:ObjectProperty ;
                  rdfs:label "location:address"@en .
 
 
+###  https://onerecord.iata.org/cargo/Location#forActions
+location:forActions rdf:type owl:ObjectProperty ;
+                    rdfs:domain :Location ;
+                    rdfs:range :LogisticsAction ;
+                    rdfs:comment "References to the Actions happening at the Location"@en ;
+                    rdfs:label "location:forActions"@en .
+
+
 ###  https://onerecord.iata.org/cargo/Location#geolocation
 location:geolocation rdf:type owl:ObjectProperty ;
                      rdfs:domain :Location ;
@@ -1329,108 +1198,68 @@ location:geolocation rdf:type owl:ObjectProperty ;
                      rdfs:label "location:geolocation"@en .
 
 
+###  https://onerecord.iata.org/cargo/LogisticsAction#contactDetails
+logisticsAction:contactDetails rdf:type owl:ObjectProperty ;
+                               rdfs:domain :LogisticsAction ;
+                               rdfs:range :ContactDetail ;
+                               rdfs:comment "Information about contacts for the Actions"@en ;
+                               rdfs:label "logisticsAction:contactDetails"@en .
+
+
 ###  https://onerecord.iata.org/cargo/LogisticsAction#contactPersons
 logisticsAction:contactPersons rdf:type owl:ObjectProperty ;
                                rdfs:domain :LogisticsAction ;
                                rdfs:range :Person ;
-                               rdfs:comment "References to Persons serving as contact for the LogisticsAction"@en ;
+                               rdfs:comment "References to contact Persons for the Action"@en ;
                                rdfs:label "logisticsAction:contactPersons"@en .
-
-
-###  https://onerecord.iata.org/cargo/LogisticsAction#limitedToObjects
-logisticsAction:limitedToObjects rdf:type owl:ObjectProperty ;
-                                 rdfs:domain :LogisticsAction ;
-                                 rdfs:range :LogisticsObject ;
-                                 rdfs:comment "Optional references to LogisticsObjects of the Activity if this Action is only performed on some"@en ;
-                                 rdfs:label "logisticsAction:limitedToObjects"@en .
 
 
 ###  https://onerecord.iata.org/cargo/LogisticsAction#location
 logisticsAction:location rdf:type owl:ObjectProperty ;
                          rdfs:domain :LogisticsAction ;
                          rdfs:range :Location ;
-                         rdfs:comment "Reference to the Location the LogisticsAction is executed at"@en ;
+                         rdfs:comment "Reference to the Location the Action was performed at"@en ;
                          rdfs:label "logisticsAction:location"@en .
 
 
-###  https://onerecord.iata.org/cargo/LogisticsAction#operator
-logisticsAction:operator rdf:type owl:ObjectProperty ;
-                         rdfs:domain :LogisticsAction ;
-                         rdfs:range :Party ;
-                         rdfs:comment "Information about the operator with reference to the organization"@en ;
-                         rdfs:label "logisticsAction:operator"@en .
+###  https://onerecord.iata.org/cargo/LogisticsAction#servedActivity
+logisticsAction:servedActivity rdf:type owl:ObjectProperty ;
+                               rdfs:domain :LogisticsAction ;
+                               rdfs:range :LogisticsActivity ;
+                               rdfs:comment "Reference to the Activity the Action was performed for"@en ;
+                               rdfs:label "logisticsAction:servedActivity"@en .
 
 
-###  https://onerecord.iata.org/cargo/LogisticsAction#otherParticipants
-logisticsAction:otherParticipants rdf:type owl:ObjectProperty ;
-                                  rdfs:domain :LogisticsAction ;
-                                  rdfs:range :Party ;
-                                  rdfs:comment "Information about other participants with references to the respective organizations"@en ;
-                                  rdfs:label "logisticsAction:otherParticipants"@en .
+###  https://onerecord.iata.org/cargo/LogisticsActivity#checkActions
+logisticsActivity:checkActions rdf:type owl:ObjectProperty ;
+                               rdfs:domain :LogisticsActivity ;
+                               rdfs:range :CheckAction ;
+                               rdfs:comment "References to CheckActions performed for the Activity"@en ;
+                               rdfs:label "logisticsActivity:checkActions"@en .
 
 
-###  https://onerecord.iata.org/cargo/LogisticsAction#relatedActivity
-logisticsAction:relatedActivity rdf:type owl:ObjectProperty ;
-                                rdfs:domain :LogisticsAction ;
-                                rdfs:range :LogisticsActivity ;
-                                rdfs:comment "Reference to the LogisticsActivity the LogisticsAction is executed for"@en ;
-                                rdfs:label "logisticsAction:relatedActivity"@en .
+###  https://onerecord.iata.org/cargo/LogisticsActivity#contactDetails
+logisticsActivity:contactDetails rdf:type owl:ObjectProperty ;
+                                 rdfs:domain :LogisticsActivity ;
+                                 rdfs:range :ContactDetail ;
+                                 rdfs:comment "Information about contacts for the Activity"@en ;
+                                 rdfs:label "logisticsActivity:contactDetails"@en .
 
 
 ###  https://onerecord.iata.org/cargo/LogisticsActivity#contactPersons
 logisticsActivity:contactPersons rdf:type owl:ObjectProperty ;
                                  rdfs:domain :LogisticsActivity ;
                                  rdfs:range :Person ;
-                                 rdfs:comment "References to Persons serving as contact for the Activity"@en ;
+                                 rdfs:comment "References to contact Persons for the Activity"@en ;
                                  rdfs:label "logisticsActivity:contactPersons"@en .
 
 
-###  https://onerecord.iata.org/cargo/LogisticsActivity#operator
-logisticsActivity:operator rdf:type owl:ObjectProperty ;
-                           rdfs:domain :LogisticsActivity ;
-                           rdfs:range :Party ;
-                           rdfs:comment "Information about the operator with reference to the organization"@en ;
-                           rdfs:label "logisticsActivity:operator"@en .
-
-
-###  https://onerecord.iata.org/cargo/LogisticsActivity#orchestrator
-logisticsActivity:orchestrator rdf:type owl:ObjectProperty ;
-                               rdfs:domain :LogisticsActivity ;
-                               rdfs:range :Party ;
-                               rdfs:comment "Information about the orchestrator with reference to the organization"@en ;
-                               rdfs:label "logisticsActivity:orchestrator"@en .
-
-
-###  https://onerecord.iata.org/cargo/LogisticsActivity#otherParticipants
-logisticsActivity:otherParticipants rdf:type owl:ObjectProperty ;
-                                    rdfs:domain :LogisticsActivity ;
-                                    rdfs:range :Party ;
-                                    rdfs:comment "Information about other participants with references to the respective organizations"@en ;
-                                    rdfs:label "logisticsActivity:otherParticipants"@en .
-
-
-###  https://onerecord.iata.org/cargo/LogisticsActivity#relatedServices
-logisticsActivity:relatedServices rdf:type owl:ObjectProperty ;
-                                  rdfs:domain :LogisticsActivity ;
-                                  rdfs:range :LogisticsService ;
-                                  rdfs:comment "References to the Services the Activity is part of"@en ;
-                                  rdfs:label "logisticsActivity:relatedServices"@en .
-
-
-###  https://onerecord.iata.org/cargo/LogisticsActivity#specialCharacteristics
-logisticsActivity:specialCharacteristics rdf:type owl:ObjectProperty ;
-                                         rdfs:domain :LogisticsActivity ;
-                                         rdfs:range :Characteristic ;
-                                         rdfs:comment "Information about Characteristics of the Activity"@en ;
-                                         rdfs:label "logisticsActivity:specialCharacteristics"@en .
-
-
-###  https://onerecord.iata.org/cargo/LogisticsActivity#specialInstructions
-logisticsActivity:specialInstructions rdf:type owl:ObjectProperty ;
-                                      rdfs:domain :LogisticsActivity ;
-                                      rdfs:range :SpecialInstruction ;
-                                      rdfs:comment "Information about Special Instructions for the Activity"@en ;
-                                      rdfs:label "logisticsActivity:specialInstructions"@en .
+###  https://onerecord.iata.org/cargo/LogisticsActivity#servedServices
+logisticsActivity:servedServices rdf:type owl:ObjectProperty ;
+                                 rdfs:domain :LogisticsActivity ;
+                                 rdfs:range :LogisticsService ;
+                                 rdfs:comment "Reference to Services this Activity is executed for"@en ;
+                                 rdfs:label "logisticsActivity:servedServices"@en .
 
 
 ###  https://onerecord.iata.org/cargo/LogisticsEvent#externalReferences
@@ -1482,6 +1311,14 @@ logisticsObject:attachedIotDevices rdf:type owl:ObjectProperty ;
                                    owl:versionInfo "v3.0 renamed from logisticsObject:iotDevices"@en .
 
 
+###  https://onerecord.iata.org/cargo/LogisticsObject#checks
+logisticsObject:checks rdf:type owl:ObjectProperty ;
+                       rdfs:domain :LogisticsObject ;
+                       rdfs:range :CheckAction ;
+                       rdfs:comment "References to the CheckActions performed on the object"@en ;
+                       rdfs:label "logisticsObject:checks"@en .
+
+
 ###  https://onerecord.iata.org/cargo/LogisticsObject#events
 logisticsObject:events rdf:type owl:ObjectProperty ;
                        rdfs:domain :LogisticsObject ;
@@ -1499,44 +1336,28 @@ logisticsObject:externalReferences rdf:type owl:ObjectProperty ;
                                    rdfs:label "logisticsObject:externalReferences"@en .
 
 
-###  https://onerecord.iata.org/cargo/LogisticsService#activities
-logisticsService:activities rdf:type owl:ObjectProperty ;
-                            rdfs:domain :LogisticsService ;
-                            rdfs:range :LogisticsActivity ;
-                            rdfs:comment "References to the Activities performed as part of the Service"@en ;
-                            rdfs:label "logisticsService:activities"@en .
+###  https://onerecord.iata.org/cargo/LogisticsService#activitySequences
+logisticsService:activitySequences rdf:type owl:ObjectProperty ;
+                                   rdfs:domain :LogisticsService ;
+                                   rdfs:range :ActivitySequence ;
+                                   rdfs:comment "Information about the Activities that are part of the Service and their sequence"@en ;
+                                   rdfs:label "logisticsService:activitySequences"@en .
+
+
+###  https://onerecord.iata.org/cargo/LogisticsService#contactDetails
+logisticsService:contactDetails rdf:type owl:ObjectProperty ;
+                                rdfs:domain :LogisticsService ;
+                                rdfs:range :ContactDetail ;
+                                rdfs:comment "Information about contacts for the Service"@en ;
+                                rdfs:label "logisticsService:contactDetails"@en .
 
 
 ###  https://onerecord.iata.org/cargo/LogisticsService#contactPersons
 logisticsService:contactPersons rdf:type owl:ObjectProperty ;
                                 rdfs:domain :LogisticsService ;
                                 rdfs:range :Person ;
-                                rdfs:comment "References to Persons serving as contact for the Service"@en ;
+                                rdfs:comment "References to contact Persons for the Service"@en ;
                                 rdfs:label "logisticsService:contactPersons"@en .
-
-
-###  https://onerecord.iata.org/cargo/LogisticsService#provider
-logisticsService:provider rdf:type owl:ObjectProperty ;
-                          rdfs:domain :LogisticsService ;
-                          rdfs:range :Party ;
-                          rdfs:comment "Information about the provider with reference to the Organization"@en ;
-                          rdfs:label "logisticsService:provider"@en .
-
-
-###  https://onerecord.iata.org/cargo/LogisticsService#specialCharacteristics
-logisticsService:specialCharacteristics rdf:type owl:ObjectProperty ;
-                                        rdfs:domain :LogisticsService ;
-                                        rdfs:range :Characteristic ;
-                                        rdfs:comment "Information about Characteristics of the Service"@en ;
-                                        rdfs:label "logisticsService:specialCharacteristics"@en .
-
-
-###  https://onerecord.iata.org/cargo/LogisticsService#specialInstructions
-logisticsService:specialInstructions rdf:type owl:ObjectProperty ;
-                                     rdfs:domain :LogisticsService ;
-                                     rdfs:range :SpecialInstruction ;
-                                     rdfs:comment "Information about Special Instructions for the Service"@en ;
-                                     rdfs:label "logisticsService:specialInstructions"@en .
 
 
 ###  https://onerecord.iata.org/cargo/Measurement#geolocation
@@ -1573,6 +1394,14 @@ measurementsOther:otherMeasurement rdf:type owl:ObjectProperty ;
                                    rdfs:label "measurementsOther:otherMeasurement"@en ;
                                    owl:deprecated "true"@en ;
                                    owl:versionInfo "v3.0 renamed from measurementsOther:genericMeasurement"@en .
+
+
+###  https://onerecord.iata.org/cargo/MovementAction#transportMeans
+movementAction:transportMeans rdf:type owl:ObjectProperty ;
+                              rdfs:domain :MovementAction ;
+                              rdfs:range :TransportMeans ;
+                              rdfs:comment "Reference to the TransportMeans that is moving"@en ;
+                              rdfs:label "movementAction:transportMeans"@en .
 
 
 ###  https://onerecord.iata.org/cargo/Organization#contactPersons
@@ -1675,20 +1504,20 @@ person:documents rdf:type owl:ObjectProperty ;
                  owl:versionInfo "Added in v1.1"@en .
 
 
+###  https://onerecord.iata.org/cargo/PhysicalLogisticsObject#actions
+physicalLogisticsObject:actions rdf:type owl:ObjectProperty ;
+                                rdfs:domain :PhysicalLogisticsObject ;
+                                rdfs:range :LogisticsAction ;
+                                rdfs:comment "References to the Actions the object is involved in"@en ;
+                                rdfs:label "physicalLogisticsObject:actions"@en .
+
+
 ###  https://onerecord.iata.org/cargo/PhysicalLogisticsObject#attachedIotDevices
 physicalLogisticsObject:attachedIotDevices rdf:type owl:ObjectProperty ;
                                            rdfs:domain :PhysicalLogisticsObject ;
                                            rdfs:range :IotDevice ;
                                            rdfs:comment "References to all connected IotDevices"@en ;
                                            rdfs:label "physicalLogisticsObject:attachedIotDevices"@en .
-
-
-###  https://onerecord.iata.org/cargo/PhysicalLogisticsObject#involvedInActivities
-physicalLogisticsObject:involvedInActivities rdf:type owl:ObjectProperty ;
-                                             rdfs:domain :PhysicalLogisticsObject ;
-                                             rdfs:range :LogisticsActivity ;
-                                             rdfs:comment "References to all activities in which the PhysicalLogisticsObject is involved in"@en ;
-                                             rdfs:label "physicalLogisticsObject:involvedInActivities"@en .
 
 
 ###  https://onerecord.iata.org/cargo/Piece#containedItems
@@ -1731,7 +1560,7 @@ piece:customsInformation rdf:type owl:ObjectProperty ;
                          rdfs:domain :Piece ;
                          rdfs:range :CustomsInformation ;
                          rdfs:comment "Customs details"@en ;
-                         rdfs:label "piece:CustomsInfo"@en ;
+                         rdfs:label "piece:customsInformation"@en ;
                          owl:versionInfo "v3.0 renamed from piece:customsInfo"@en .
 
 
@@ -1839,7 +1668,6 @@ piece:specialHandling rdf:type owl:ObjectProperty ;
 ###  https://onerecord.iata.org/cargo/Piece#transportMovements
 piece:transportMovements rdf:type owl:ObjectProperty ;
                          rdfs:domain :Piece ;
-                         rdfs:range :TransportMovement ;
                          rdfs:comment "Transport Movements on which the piece is transported"@en ;
                          rdfs:label "piece:transportMovements"@en ;
                          owl:deprecated "true"@en .
@@ -2255,34 +2083,25 @@ shipment:waybill rdf:type owl:ObjectProperty ;
                  owl:versionInfo "v2.1.1 renamed from shipment:waybillNumber"@en .
 
 
-###  https://onerecord.iata.org/cargo/StoringActivity#storageExecution
-storingActivity:storageExecution rdf:type owl:ObjectProperty ;
-                                 rdfs:domain :StoringActivity ;
-                                 rdfs:range :StoringAction ;
-                                 rdfs:comment "References to all StoringActions to be executed for the StoringActivity"@en ;
-                                 rdfs:label "storingActivity:storageExecution"@en .
+###  https://onerecord.iata.org/cargo/Storing#storingActions
+storing:storingActions rdf:type owl:ObjectProperty ;
+                       rdfs:domain :Storing ;
+                       rdfs:range :StoringAction ;
+                       rdfs:comment "References to all StoringActions performed for the Storing Activity"@en ;
+                       rdfs:label "storing:storingActions"@en .
 
 
-###  https://onerecord.iata.org/cargo/StoringActivity#storageLocation
-storingActivity:storageLocation rdf:type owl:ObjectProperty ;
-                                rdfs:domain :StoringActivity ;
-                                rdfs:range :Location ;
-                                rdfs:comment "Reference to the Location the StorageActivity takes place at"@en ;
-                                rdfs:label "storingActivity:storageLocation"@en .
-
-
-###  https://onerecord.iata.org/cargo/StoringActivity#storedObject
-storingActivity:storedObject rdf:type owl:ObjectProperty ;
-                             rdfs:domain :StoringActivity ;
-                             rdfs:range :PhysicalLogisticsObject ;
-                             rdfs:comment "Reference to the LogisticsObject that is stored"@en ;
-                             rdfs:label "storingActivity:storedObject"@en .
+###  https://onerecord.iata.org/cargo/StoringAction#storedObjects
+storingAction:storedObjects rdf:type owl:ObjectProperty ;
+                            rdfs:domain :StoringAction ;
+                            rdfs:range :PhysicalLogisticsObject ;
+                            rdfs:comment "Reference to the Objects being stored in or stored out"@en ;
+                            rdfs:label "storingAction:storedObjects"@en .
 
 
 ###  https://onerecord.iata.org/cargo/TransportMeans#transportMovement
 transportMeans:transportMovement rdf:type owl:ObjectProperty ;
                                  rdfs:domain :TransportMeans ;
-                                 rdfs:range :TransportMovement ;
                                  rdfs:comment "Transport Movement on which the Transport Means is used"@en ;
                                  rdfs:label "transportMeans:transportMovement"@en ;
                                  owl:deprecated "true"@en .
@@ -2313,11 +2132,19 @@ transportMeans:typicalFuelConsumption rdf:type owl:ObjectProperty ;
                                       rdfs:label "transportMeans:typicalFuelConsumption"@en .
 
 
+###  https://onerecord.iata.org/cargo/TransportMovement#actions
+transportMovement:actions rdf:type owl:ObjectProperty ;
+                          rdfs:domain :TransportMovement ;
+                          rdfs:range :LogisticsAction ;
+                          rdfs:comment "References to all Actions performed for the TransportMovement"@en ;
+                          rdfs:label "transportMovement:actions"@en .
+
+
 ###  https://onerecord.iata.org/cargo/TransportMovement#arrivalLocation
 transportMovement:arrivalLocation rdf:type owl:ObjectProperty ;
                                   rdfs:domain :TransportMovement ;
                                   rdfs:range :Location ;
-                                  rdfs:comment "Arrival location details"@en ;
+                                  rdfs:comment "Reference to the arrival Location"@en ;
                                   rdfs:label "transportMovement:arrivalLocation"@en .
 
 
@@ -2325,23 +2152,23 @@ transportMovement:arrivalLocation rdf:type owl:ObjectProperty ;
 transportMovement:co2Emissions rdf:type owl:ObjectProperty ;
                                rdfs:domain :TransportMovement ;
                                rdfs:range :CO2Emissions ;
-                               rdfs:comment "Amount of CO2 emitted (e.g. 34 kg/km)"@en ;
+                               rdfs:comment "References to CO2Emissions"@en ;
                                rdfs:label "transportMovement:co2Emissions"@en .
 
 
-###  https://onerecord.iata.org/cargo/TransportMovement#departureLocation
-transportMovement:departureLocation rdf:type owl:ObjectProperty ;
-                                    rdfs:domain :TransportMovement ;
-                                    rdfs:range :Location ;
-                                    rdfs:comment "Departure location details"@en ;
-                                    rdfs:label "transportMovement:departureLocation"@en .
+###  https://onerecord.iata.org/cargo/TransportMovement#depatureLocation
+transportMovement:depatureLocation rdf:type owl:ObjectProperty ;
+                                   rdfs:domain :TransportMovement ;
+                                   rdfs:range :Location ;
+                                   rdfs:comment "Reference to the depature Location"@en ;
+                                   rdfs:label "transportMovement:depatureLocation"@en .
 
 
 ###  https://onerecord.iata.org/cargo/TransportMovement#distanceCalculated
 transportMovement:distanceCalculated rdf:type owl:ObjectProperty ;
                                      rdfs:domain :TransportMovement ;
                                      rdfs:range :Value ;
-                                     rdfs:comment "Distance calculated if distance measured is not available"@en ;
+                                     rdfs:comment "Information about the calculated distance"@en ;
                                      rdfs:label "transportMovement:distanceCalculated"@en .
 
 
@@ -2349,13 +2176,12 @@ transportMovement:distanceCalculated rdf:type owl:ObjectProperty ;
 transportMovement:distanceMeasured rdf:type owl:ObjectProperty ;
                                    rdfs:domain :TransportMovement ;
                                    rdfs:range :Value ;
-                                   rdfs:comment "Distance measured"@en ;
+                                   rdfs:comment "Information about the measured distance"@en ;
                                    rdfs:label "transportMovement:distanceMeasured"@en .
 
 
 ###  https://onerecord.iata.org/cargo/TransportMovement#externalReferences
 transportMovement:externalReferences rdf:type owl:ObjectProperty ;
-                                     rdfs:domain :TransportMovement ;
                                      rdfs:range :ExternalReference ;
                                      rdfs:comment "Reference to document or logistics object (URI)"@en ;
                                      rdfs:label "transportMovement:externalReferences"@en ;
@@ -2366,7 +2192,7 @@ transportMovement:externalReferences rdf:type owl:ObjectProperty ;
 transportMovement:fuelAmountCalculated rdf:type owl:ObjectProperty ;
                                        rdfs:domain :TransportMovement ;
                                        rdfs:range :Value ;
-                                       rdfs:comment "calculated fuel consumption, if measured not available"@en ;
+                                       rdfs:comment "Information about the calculated fuel amount"@en ;
                                        rdfs:label "transportMovement:fuelAmountCalculated"@en .
 
 
@@ -2374,29 +2200,12 @@ transportMovement:fuelAmountCalculated rdf:type owl:ObjectProperty ;
 transportMovement:fuelAmountMeasured rdf:type owl:ObjectProperty ;
                                      rdfs:domain :TransportMovement ;
                                      rdfs:range :Value ;
-                                     rdfs:comment "actual measured fuel consumption"@en ;
+                                     rdfs:comment "Information about the measured fuel amount"@en ;
                                      rdfs:label "transportMovement:fuelAmountMeasured"@en .
-
-
-###  https://onerecord.iata.org/cargo/TransportMovement#loadingActivities
-transportMovement:loadingActivities rdf:type owl:ObjectProperty ;
-                                    rdfs:domain :TransportMovement ;
-                                    rdfs:range :LoadingActivity ;
-                                    rdfs:comment "References to all LoadingActivities that are part of this TransportMovement"@en ;
-                                    rdfs:label "transportMovement:loadingActivities"@en .
-
-
-###  https://onerecord.iata.org/cargo/TransportMovement#movementExecution
-transportMovement:movementExecution rdf:type owl:ObjectProperty ;
-                                    rdfs:domain :TransportMovement ;
-                                    rdfs:range :MovementAction ;
-                                    rdfs:comment "References to all MovementActions to be executed in the TransportMovement"@en ;
-                                    rdfs:label "transportMovement:movementExecution"@en .
 
 
 ###  https://onerecord.iata.org/cargo/TransportMovement#movementTimes
 transportMovement:movementTimes rdf:type owl:ObjectProperty ;
-                                rdfs:domain :TransportMovement ;
                                 rdfs:range :MovementTimes ;
                                 rdfs:comment "Reference to all Movement Times such as Departure, Arrival, etc."@en ;
                                 rdfs:label "transportMovement:movementTimes" ;
@@ -2405,24 +2214,14 @@ transportMovement:movementTimes rdf:type owl:ObjectProperty ;
 
 ###  https://onerecord.iata.org/cargo/TransportMovement#payload
 transportMovement:payload rdf:type owl:ObjectProperty ;
-                          rdfs:domain :TransportMovement ;
                           rdfs:range :Value ;
                           rdfs:comment "Actual payload for the transport"@en ;
                           rdfs:label "transportMovement:payload"@en ;
                           owl:deprecated "true"@en .
 
 
-###  https://onerecord.iata.org/cargo/TransportMovement#transportMeans
-transportMovement:transportMeans rdf:type owl:ObjectProperty ;
-                                 rdfs:domain :TransportMovement ;
-                                 rdfs:range :TransportMeans ;
-                                 rdfs:comment "Transport means details"@en ;
-                                 rdfs:label "transportMovement:transportMeans"@en .
-
-
 ###  https://onerecord.iata.org/cargo/TransportMovement#transportMeansOperators
 transportMovement:transportMeansOperators rdf:type owl:ObjectProperty ;
-                                          rdfs:domain :TransportMovement ;
                                           rdfs:range :Person ;
                                           rdfs:comment "Name of the person operating the transport means (e.g. aircraft captain, truck driver)"@en ;
                                           rdfs:label "transportMovement:transportMeansOperator"@en ;
@@ -2432,7 +2231,6 @@ transportMovement:transportMeansOperators rdf:type owl:ObjectProperty ;
 
 ###  https://onerecord.iata.org/cargo/TransportMovement#transportedPieces
 transportMovement:transportedPieces rdf:type owl:ObjectProperty ;
-                                    rdfs:domain :TransportMovement ;
                                     rdfs:range :Piece ;
                                     rdfs:comment "Pieces assigned to the transport segment"@en ;
                                     rdfs:label "transportMovement:transportedPieces"@en ;
@@ -2441,39 +2239,18 @@ transportMovement:transportedPieces rdf:type owl:ObjectProperty ;
 
 ###  https://onerecord.iata.org/cargo/TransportMovement#transportedUlds
 transportMovement:transportedUlds rdf:type owl:ObjectProperty ;
-                                  rdfs:domain :TransportMovement ;
                                   rdfs:range :LoadingUnit ;
                                   rdfs:comment "ULDs assigned to the transport segment"@en ;
                                   rdfs:label "transportMovement:transportedUlds"@en ;
                                   owl:deprecated "true"@en .
 
 
-###  https://onerecord.iata.org/cargo/UnitComposition#composedObjects
-unitComposition:composedObjects rdf:type owl:ObjectProperty ;
-                                rdfs:domain :UnitComposition ;
-                                rdfs:range [ rdf:type owl:Class ;
-                                             owl:unionOf ( :LoadingMaterial
-                                                           :Piece
-                                                         )
-                                           ] ;
-                                rdfs:comment "References to all composed Pieces and LoadingMaterials that are part of the UnitComposition"@en ;
-                                rdfs:label "unitComposition:composedObjects"@en .
-
-
-###  https://onerecord.iata.org/cargo/UnitComposition#compositionExecution
-unitComposition:compositionExecution rdf:type owl:ObjectProperty ;
-                                     rdfs:domain :UnitComposition ;
-                                     rdfs:range :CompositionAction ;
-                                     rdfs:comment "References to all compositionActions to be executed in the TransportMovement"@en ;
-                                     rdfs:label "unitComposition:compositionExecution"@en .
-
-
-###  https://onerecord.iata.org/cargo/UnitComposition#container
-unitComposition:container rdf:type owl:ObjectProperty ;
-                          rdfs:domain :UnitComposition ;
-                          rdfs:range :LoadingUnit ;
-                          rdfs:comment "Reference to the LoadingUnit used for the UnitComposition"@en ;
-                          rdfs:label "unitComposition:container"@en .
+###  https://onerecord.iata.org/cargo/UnitComposition#compositionActions
+unitComposition:compositionActions rdf:type owl:ObjectProperty ;
+                                   rdfs:domain :UnitComposition ;
+                                   rdfs:range :CompositionAction ;
+                                   rdfs:comment "References to all CompositionActions performed for the UnitComposition"@en ;
+                                   rdfs:label "unitComposition:compositionActions"@en .
 
 
 ###  https://onerecord.iata.org/cargo/VolumetricWeight#chargeableWeight
@@ -2578,6 +2355,14 @@ waybill:shipper rdf:type owl:ObjectProperty ;
 #    Data properties
 #################################################################
 
+###  https://onerecord.iata.org/cargo/ActivitySequence#sequenceNumber
+activitySequence:sequenceNumber rdf:type owl:DatatypeProperty ;
+                                rdfs:domain :ActivitySequence ;
+                                rdfs:range xsd:string ;
+                                rdfs:comment "Short text to detail sequence number (alphanumeric)"@en ;
+                                rdfs:label "activitySequence:sequenceNumber"@en .
+
+
 ###  https://onerecord.iata.org/cargo/Address#addressCode
 address:addressCode rdf:type owl:DatatypeProperty ;
                     rdfs:domain :Address ;
@@ -2657,7 +2442,7 @@ adjustments:correctionSerialNumber rdf:type owl:DatatypeProperty ;
                                    rdfs:domain :Adjustments ;
                                    rdfs:range xsd:string ;
                                    rdfs:comment "Serial Number of the correction"@en ;
-                                   rdfs:label "Adjustments:correctionSerialNumber"@en .
+                                   rdfs:label "adjustments:correctionSerialNumber"@en .
 
 
 ###  https://onerecord.iata.org/cargo/Adjustments#nbCorrections
@@ -2665,7 +2450,7 @@ adjustments:nbCorrections rdf:type owl:DatatypeProperty ;
                           rdfs:domain :Adjustments ;
                           rdfs:range xsd:integer ;
                           rdfs:comment "Number of the adjustment"@en ;
-                          rdfs:label "Adjustments:nbCorrections"@en .
+                          rdfs:label "adjustments:nbCorrections"@en .
 
 
 ###  https://onerecord.iata.org/cargo/Adjustments#reasonsForAdjustments
@@ -2673,7 +2458,7 @@ adjustments:reasonsForAdjustments rdf:type owl:DatatypeProperty ;
                                   rdfs:domain :Adjustments ;
                                   rdfs:range xsd:string ;
                                   rdfs:comment "A free text for user to include a reason for correction"@en ;
-                                  rdfs:label "Adjustments:reasonsForAdjustments"@en .
+                                  rdfs:label "adjustments:reasonsForAdjustments"@en .
 
 
 ###  https://onerecord.iata.org/cargo/Answer#text
@@ -3066,14 +2851,6 @@ characteristic:value rdf:type owl:DatatypeProperty ;
                      rdfs:label "characteristic:value"@en .
 
 
-###  https://onerecord.iata.org/cargo/Check#checkType
-check:checkType rdf:type owl:DatatypeProperty ;
-                rdfs:domain :Check ;
-                rdfs:range xsd:string ;
-                rdfs:comment "Type of the Check"@en ;
-                rdfs:label "check:checkType"@en .
-
-
 ###  https://onerecord.iata.org/cargo/CheckTemplate#date
 checkTemplate:date rdf:type owl:DatatypeProperty ;
                    rdfs:domain :CheckTemplate ;
@@ -3129,192 +2906,6 @@ commonObjects:companyIdentifier rdf:type owl:DatatypeProperty ;
                                 rdfs:comment "Company identifier from the Internet of Logistics of the entity that hosts the Common Object."@en ;
                                 rdfs:label "commonObjects:companyIdentifier"@en ;
                                 owl:deprecated "true"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService#incoterms
-commonService:incoterms rdf:type owl:DatatypeProperty ;
-                        rdfs:domain :CommonService ;
-                        rdfs:range xsd:string ;
-                        rdfs:comment "Standard codes as defined by UNCEFACT and ICC that correspond to international rules for the interpretation of the most commonly used trade terms in different countries. UNECE recommendation n. 5 Incoterms 2000."@en ;
-                        rdfs:label "commonService:incoterms"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService#productDescription
-commonService:productDescription rdf:type owl:DatatypeProperty ;
-                                 rdfs:domain :CommonService ;
-                                 rdfs:range xsd:string ;
-                                 rdfs:comment "Short text describing the product of the Service"@en ;
-                                 rdfs:label "commonService:productDescription"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService#serviceAgreementReference
-commonService:serviceAgreementReference rdf:type owl:DatatypeProperty ;
-                                        rdfs:domain :CommonService ;
-                                        rdfs:range xsd:string ;
-                                        rdfs:comment "Short text referring to the service agreement"@en ;
-                                        rdfs:label "commonService:serviceAgreementReference"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService#serviceDescription
-commonService:serviceDescription rdf:type owl:DatatypeProperty ;
-                                 rdfs:domain :CommonService ;
-                                 rdfs:range xsd:string ;
-                                 rdfs:comment "Short text describing the Service"@en ;
-                                 rdfs:label "commonService:serviceDescription"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService#serviceName
-commonService:serviceName rdf:type owl:DatatypeProperty ;
-                          rdfs:domain :CommonService ;
-                          rdfs:range xsd:string ;
-                          rdfs:comment "Name of the Service"@en ;
-                          rdfs:label "commonService:serviceName"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService#serviceNature
-commonService:serviceNature rdf:type owl:DatatypeProperty ;
-                            rdfs:domain :CommonService ;
-                            rdfs:range xsd:string ;
-                            rdfs:comment "Nature of the Service, such as \"FINANCE\" or \"LOGISTICS\""@en ;
-                            rdfs:label "commonService:serviceNature"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService#serviceStatus
-commonService:serviceStatus rdf:type owl:DatatypeProperty ;
-                            rdfs:domain :CommonService ;
-                            rdfs:range [ rdf:type rdfs:Datatype ;
-                                         owl:oneOf [ rdf:type rdf:List ;
-                                                     rdf:first "APPROVED" ;
-                                                     rdf:rest [ rdf:type rdf:List ;
-                                                                rdf:first "CANCELED" ;
-                                                                rdf:rest [ rdf:type rdf:List ;
-                                                                           rdf:first "DRAFT" ;
-                                                                           rdf:rest [ rdf:type rdf:List ;
-                                                                                      rdf:first "PROPOSED" ;
-                                                                                      rdf:rest rdf:nil
-                                                                                    ]
-                                                                         ]
-                                                              ]
-                                                   ]
-                                       ] ;
-                            rdfs:comment """Status of the Service:
-APPROVED when accepted by the requestor
-CANCELED when the Service is contractually canceled
-PROPOSED when it its proposed by the provider but not approved by the requestor
-DRAFT when the service is still being drafted"""@en ;
-                            rdfs:label "commonService:serviceStatus"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService#serviceSubtype
-commonService:serviceSubtype rdf:type owl:DatatypeProperty ;
-                             rdfs:domain :CommonService ;
-                             rdfs:range xsd:string ;
-                             rdfs:comment "Subtype of the Service, such as \"AIR-TRANSPORT\" or \"SEA-TRANSPORT\""@en ;
-                             rdfs:label "commonService:serviceSubtype"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService#serviceType
-commonService:serviceType rdf:type owl:DatatypeProperty ;
-                          rdfs:domain :CommonService ;
-                          rdfs:range xsd:string ;
-                          rdfs:comment "Type of the Service, such as \"WAREHOUSING\" or \"TRANSPORT\""@en ;
-                          rdfs:label "commonService:serviceType"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#incoterms
-commonServiceRequest:incoterms rdf:type owl:DatatypeProperty ;
-                               rdfs:domain :CommonServiceRequest ;
-                               rdfs:range xsd:string ;
-                               rdfs:comment "Standard codes as defined by UNCEFACT and ICC that correspond to international rules for the interpretation of the most commonly used trade terms in different countries. UNECE recommendation n. 5 Incoterms 2000."@en ;
-                               rdfs:label "commonServiceRequest:incoterms"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#productDescription
-commonServiceRequest:productDescription rdf:type owl:DatatypeProperty ;
-                                        rdfs:domain :CommonServiceRequest ;
-                                        rdfs:range xsd:string ;
-                                        rdfs:comment "Short text describing the product of the requested Service"@en ;
-                                        rdfs:label "commonServiceRequest:productDescription"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#requestDateTime
-commonServiceRequest:requestDateTime rdf:type owl:DatatypeProperty ;
-                                     rdfs:domain :CommonServiceRequest ;
-                                     rdfs:range xsd:dateTime ;
-                                     rdfs:comment "DateTime on which the ServiceRequest was issued"@en ;
-                                     rdfs:label "commonServiceRequest:requestDateTime"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#requestStatus
-commonServiceRequest:requestStatus rdf:type owl:DatatypeProperty ;
-                                   rdfs:domain :CommonServiceRequest ;
-                                   rdfs:range xsd:string ;
-                                   rdfs:comment "Status of the Service"@en ;
-                                   rdfs:label "commonServiceRequest:requestStatus"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#responseDateTime
-commonServiceRequest:responseDateTime rdf:type owl:DatatypeProperty ;
-                                      rdfs:domain :CommonServiceRequest ;
-                                      rdfs:range xsd:dateTime ;
-                                      rdfs:comment "DateTime on which the ServiceRequest was responed to"@en ;
-                                      rdfs:label "commonServiceRequest:responseDateTime"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#responseStatus
-commonServiceRequest:responseStatus rdf:type owl:DatatypeProperty ;
-                                    rdfs:domain :CommonServiceRequest ;
-                                    rdfs:range xsd:string ;
-                                    rdfs:comment "Status of the response to the ServiceRequest"@en ;
-                                    rdfs:label "commonServiceRequest:responseStatus"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#serviceAgreementReference
-commonServiceRequest:serviceAgreementReference rdf:type owl:DatatypeProperty ;
-                                               rdfs:domain :CommonServiceRequest ;
-                                               rdfs:range xsd:string ;
-                                               rdfs:comment "Short text referring to the requestedservice agreement"@en ;
-                                               rdfs:label "commonServiceRequest:serviceAgreementReference"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#serviceDescription
-commonServiceRequest:serviceDescription rdf:type owl:DatatypeProperty ;
-                                        rdfs:domain :CommonServiceRequest ;
-                                        rdfs:range xsd:string ;
-                                        rdfs:comment "Name of the requested Service"@en ;
-                                        rdfs:label "commonServiceRequest:serviceDescription"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#serviceName
-commonServiceRequest:serviceName rdf:type owl:DatatypeProperty ;
-                                 rdfs:domain :CommonServiceRequest ;
-                                 rdfs:range xsd:string ;
-                                 rdfs:comment "Status of the requested Service"@en ;
-                                 rdfs:label "commonServiceRequest:serviceName"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#serviceNature
-commonServiceRequest:serviceNature rdf:type owl:DatatypeProperty ;
-                                   rdfs:domain :CommonServiceRequest ;
-                                   rdfs:range xsd:string ;
-                                   rdfs:comment "Nature of the requested Service, such as \"FINANCE\" or \"LOGISTICS\""@en ;
-                                   rdfs:label "commonServiceRequest:serviceNature"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#serviceSubtype
-commonServiceRequest:serviceSubtype rdf:type owl:DatatypeProperty ;
-                                    rdfs:domain :CommonServiceRequest ;
-                                    rdfs:range xsd:string ;
-                                    rdfs:comment "Subtype of the requested Service, such as \"AIR-TRANSPORT\" or \"SEA-TRANSPORT\""@en ;
-                                    rdfs:label "commonServiceRequest:serviceSubtype"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest#serviceType
-commonServiceRequest:serviceType rdf:type owl:DatatypeProperty ;
-                                 rdfs:domain :CommonServiceRequest ;
-                                 rdfs:range xsd:string ;
-                                 rdfs:comment "Type of the requested Service, such as \"WAREHOUSING\" or \"TRANSPORT\""@en ;
-                                 rdfs:label "commonServiceRequest:serviceType"@en .
 
 
 ###  https://onerecord.iata.org/cargo/Company#companyName
@@ -3383,28 +2974,12 @@ companyBranch:iataCargoAgentLocationIdentifier rdf:type owl:DatatypeProperty ;
                                                owl:deprecated "true"@en .
 
 
-###  https://onerecord.iata.org/cargo/ComplexActivity#complexActivitySubtype
-complexActivity:complexActivitySubtype rdf:type owl:DatatypeProperty ;
-                                       rdfs:domain :ComplexActivity ;
-                                       rdfs:range xsd:string ;
-                                       rdfs:comment "Subtype of the ComplexActivity"@en ;
-                                       rdfs:label "complexActivity:complexActivitySubtype"@en .
-
-
-###  https://onerecord.iata.org/cargo/ComplexActivity#complexActivityType
-complexActivity:complexActivityType rdf:type owl:DatatypeProperty ;
-                                    rdfs:domain :ComplexActivity ;
-                                    rdfs:range xsd:string ;
-                                    rdfs:comment "Type of the ComplexActivity"@en ;
-                                    rdfs:label "complexActivity:complexActivityType"@en .
-
-
 ###  https://onerecord.iata.org/cargo/CompositionAction#compositionType
 compositionAction:compositionType rdf:type owl:DatatypeProperty ;
                                   rdfs:domain :CompositionAction ;
                                   rdfs:range [ rdf:type rdfs:Datatype ;
                                                owl:oneOf [ rdf:type rdf:List ;
-                                                           rdf:first "Breakdown" ;
+                                                           rdf:first "BreakDown" ;
                                                            rdf:rest [ rdf:type rdf:List ;
                                                                       rdf:first "BuildUp" ;
                                                                       rdf:rest rdf:nil
@@ -4154,6 +3729,14 @@ liveAnimalsEpermit:validUntil rdf:type owl:DatatypeProperty ;
                               owl:versionInfo "v3.0 renamed from liveAnimalsEpermit:permitValidUntil"@en .
 
 
+###  https://onerecord.iata.org/cargo/Loading#loadingIdentifier
+loading:loadingIdentifier rdf:type owl:DatatypeProperty ;
+                          rdfs:domain :Loading ;
+                          rdfs:range xsd:string ;
+                          rdfs:comment "Short text holding the process number if necessary"@en ;
+                          rdfs:label "loading:loadingIdentifier"@en .
+
+
 ###  https://onerecord.iata.org/cargo/LoadingAction#loadingPosition
 loadingAction:loadingPosition rdf:type owl:DatatypeProperty ;
                               rdfs:domain :LoadingAction ;
@@ -4368,12 +3951,20 @@ location:locationType rdf:type owl:DatatypeProperty ;
                       rdfs:label "location:locationType"@en .
 
 
-###  https://onerecord.iata.org/cargo/LogisticsAction#actionTime
-logisticsAction:actionTime rdf:type owl:DatatypeProperty ;
-                           rdfs:domain :LogisticsAction ;
-                           rdfs:range xsd:dateTime ;
-                           rdfs:comment "DateTime holding the time of the Action; Type is indicated through ActionType property"@en ;
-                           rdfs:label "logisticsAction:actionTime"@en .
+###  https://onerecord.iata.org/cargo/LogisticsAction#actionEndTime
+logisticsAction:actionEndTime rdf:type owl:DatatypeProperty ;
+                              rdfs:domain :LogisticsAction ;
+                              rdfs:range xsd:dateTime ;
+                              rdfs:comment "DateTime holding the end time of the Action; Type is indicated through ActionType property"@en ;
+                              rdfs:label "logisticsAction:actionEndTime"@en .
+
+
+###  https://onerecord.iata.org/cargo/LogisticsAction#actionStartTime
+logisticsAction:actionStartTime rdf:type owl:DatatypeProperty ;
+                                rdfs:domain :LogisticsAction ;
+                                rdfs:range xsd:dateTime ;
+                                rdfs:comment "DateTime holding the start time of the Action; Type is indicated through ActionType property"@en ;
+                                rdfs:label "logisticsAction:actionStartTime"@en .
 
 
 ###  https://onerecord.iata.org/cargo/LogisticsAction#actionType
@@ -4390,7 +3981,10 @@ logisticsAction:actionType rdf:type owl:DatatypeProperty ;
                                                                                      rdf:first "Planned" ;
                                                                                      rdf:rest [ rdf:type rdf:List ;
                                                                                                 rdf:first "Requested" ;
-                                                                                                rdf:rest rdf:nil
+                                                                                                rdf:rest [ rdf:type rdf:List ;
+                                                                                                           rdf:first "Scheduled" ;
+                                                                                                           rdf:rest rdf:nil
+                                                                                                         ]
                                                                                               ]
                                                                                    ]
                                                                         ]
@@ -4399,14 +3993,6 @@ logisticsAction:actionType rdf:type owl:DatatypeProperty ;
                                       ] ;
                            rdfs:comment "Enum stating the type of the Action"@en ;
                            rdfs:label "logisticsAction:actionType"@en .
-
-
-###  https://onerecord.iata.org/cargo/LogisticsActivity#activityName
-logisticsActivity:activityName rdf:type owl:DatatypeProperty ;
-                               rdfs:domain :LogisticsActivity ;
-                               rdfs:range xsd:string ;
-                               rdfs:comment "Name of the Activity"@en ;
-                               rdfs:label "logisticsActivity:activityName"@en .
 
 
 ###  https://onerecord.iata.org/cargo/LogisticsActivity#executionStatus
@@ -4429,22 +4015,6 @@ logisticsActivity:executionStatus rdf:type owl:DatatypeProperty ;
                                              ] ;
                                   rdfs:comment "Enum stating the status of the Activity"@en ;
                                   rdfs:label "logisticsActivity:executionStatus"@en .
-
-
-###  https://onerecord.iata.org/cargo/LogisticsActivity#processReference
-logisticsActivity:processReference rdf:type owl:DatatypeProperty ;
-                                   rdfs:domain :LogisticsActivity ;
-                                   rdfs:range xsd:string ;
-                                   rdfs:comment "Text referring to the process the Activity is part of, e.g. the Master Operating Plan"@en ;
-                                   rdfs:label "logisticsActivity:processReference"@en .
-
-
-###  https://onerecord.iata.org/cargo/LogisticsActivity#sequenceNumber
-logisticsActivity:sequenceNumber rdf:type owl:DatatypeProperty ;
-                                 rdfs:domain :LogisticsActivity ;
-                                 rdfs:range xsd:integer ;
-                                 rdfs:comment "Number to the track the sequence of the Activity if required"@en ;
-                                 rdfs:label "logisticsActivity:sequenceNumber"@en .
 
 
 ###  https://onerecord.iata.org/cargo/LogisticsEvent#creationDate
@@ -4520,22 +4090,6 @@ logisticsObject:skeletonIndicator rdf:type owl:DatatypeProperty ;
                                   rdfs:label "logisticsObject:skeletonIndicator"@en .
 
 
-###  https://onerecord.iata.org/cargo/LogisticsService#executionStatus
-logisticsService:executionStatus rdf:type owl:DatatypeProperty ;
-                                 rdfs:domain :LogisticsService ;
-                                 rdfs:range xsd:string ;
-                                 rdfs:comment "Short text stating the execution status of the Service"@en ;
-                                 rdfs:label "logisticsService:executionStatus"@en .
-
-
-###  https://onerecord.iata.org/cargo/LogisticsService#requestMatchIndicator
-logisticsService:requestMatchIndicator rdf:type owl:DatatypeProperty ;
-                                       rdfs:domain :LogisticsService ;
-                                       rdfs:range xsd:boolean ;
-                                       rdfs:comment "Indicator if the service is the perfect match for a request"@en ;
-                                       rdfs:label "logisticsService:requestMatchIndicator"@en .
-
-
 ###  https://onerecord.iata.org/cargo/Measurement#measurementTimestamp
 measurement:measurementTimestamp rdf:type owl:DatatypeProperty ;
                                  rdfs:domain :Measurement ;
@@ -4552,11 +4106,14 @@ movementAction:movementType rdf:type owl:DatatypeProperty ;
                                                      rdf:first "Arrival" ;
                                                      rdf:rest [ rdf:type rdf:List ;
                                                                 rdf:first "Departure" ;
-                                                                rdf:rest rdf:nil
+                                                                rdf:rest [ rdf:type rdf:List ;
+                                                                           rdf:first "UnplannedStop" ;
+                                                                           rdf:rest rdf:nil
+                                                                         ]
                                                               ]
                                                    ]
                                        ] ;
-                            rdfs:comment "Enum stating whether the MovementAction describes arrival or depature"@en ;
+                            rdfs:comment "Enum stating whether the MovementAction desribes arrival, depature or an unplanned stop"@en ;
                             rdfs:label "movementAction:movementType"@en .
 
 
@@ -5109,7 +4666,6 @@ pieceLiveAnimals:originReferencePermitId rdf:type owl:DatatypeProperty ;
 
 ###  https://onerecord.iata.org/cargo/PieceLiveAnimals#originReferencePermitTypeCode
 pieceLiveAnimals:originReferencePermitTypeCode rdf:type owl:DatatypeProperty ;
-                                               rdfs:subPropertyOf owl:topDataProperty ;
                                                rdfs:domain :PieceLiveAnimals ;
                                                rdfs:range xsd:string ;
                                                rdfs:comment "Document type code of origin reference permit or re-export reference Certificate (box 12/12a)"@en ;
@@ -5917,20 +5473,12 @@ shipment:weightValuationIndicator rdf:type owl:DatatypeProperty ;
                                   rdfs:label "shipment:weightValuationIndicator"@en .
 
 
-###  https://onerecord.iata.org/cargo/SpecialInstruction#description
-specialInstruction:description rdf:type owl:DatatypeProperty ;
-                               rdfs:domain :SpecialInstruction ;
-                               rdfs:range xsd:string ;
-                               rdfs:comment "Text describing a specific instruction"@en ;
-                               rdfs:label "specialInstruction:description"@en .
-
-
-###  https://onerecord.iata.org/cargo/SpecialInstruction#instructionCode
-specialInstruction:instructionCode rdf:type owl:DatatypeProperty ;
-                                   rdfs:domain :SpecialInstruction ;
-                                   rdfs:range xsd:string ;
-                                   rdfs:comment "Code for the given instruction if available"@en ;
-                                   rdfs:label "specialInstruction:instructionCode"@en .
+###  https://onerecord.iata.org/cargo/Storing#storingIdentifier
+storing:storingIdentifier rdf:type owl:DatatypeProperty ;
+                          rdfs:domain :Storing ;
+                          rdfs:range xsd:string ;
+                          rdfs:comment "Short text holding the process number if necessary"@en ;
+                          rdfs:label "storing:storingIdentifier"@en .
 
 
 ###  https://onerecord.iata.org/cargo/StoringAction#storagePlace
@@ -5946,9 +5494,9 @@ storingAction:storeType rdf:type owl:DatatypeProperty ;
                         rdfs:domain :StoringAction ;
                         rdfs:range [ rdf:type rdfs:Datatype ;
                                      owl:oneOf [ rdf:type rdf:List ;
-                                                 rdf:first "IN" ;
+                                                 rdf:first "StoreIn" ;
                                                  rdf:rest [ rdf:type rdf:List ;
-                                                            rdf:first "OUT" ;
+                                                            rdf:first "StoreOut" ;
                                                             rdf:rest rdf:nil
                                                           ]
                                                ]
@@ -6033,8 +5581,7 @@ transportMovement:modeCode rdf:type owl:DatatypeProperty ;
                                                              ]
                                                   ]
                                       ] ;
-                           rdfs:comment """Mode of transport code, refer to UNECE Rec. 19
-https://unece.org/fileadmin/DAM/cefact/recommendations/rec19/rec19_01cf19e.pdf"""@en ;
+                           rdfs:comment "Mode of transport code, refer to UNECE Rec. 19 https://unece.org/fileadmin/DAM/cefact/recommendations/rec19/rec19_01cf19e.pdf"@en ;
                            rdfs:label "transportMovement:modeCode"@en .
 
 
@@ -6069,16 +5616,16 @@ transportMovement:seal rdf:type owl:DatatypeProperty ;
 transportMovement:transportIdentifier rdf:type owl:DatatypeProperty ;
                                       rdfs:domain :TransportMovement ;
                                       rdfs:range xsd:string ;
-                                      rdfs:comment "Airline flight number, or rail /  truck / maritime line id"@en ;
+                                      rdfs:comment "Airline flight number, or rail/truck/maritime line id"@en ;
                                       rdfs:label "transportMovement:transportIdentifier"@en .
 
 
-###  https://onerecord.iata.org/cargo/TransportMovement#unplannedStop
-transportMovement:unplannedStop rdf:type owl:DatatypeProperty ;
-                                rdfs:domain :TransportMovement ;
-                                rdfs:range xsd:string ;
-                                rdfs:comment "Free text field to be used for additional details regarding unplanned stops such as technical stops."@en ;
-                                rdfs:label "transportMovement:unplannedStop"@en .
+###  https://onerecord.iata.org/cargo/UnitComposition#compositionIdentifier
+unitComposition:compositionIdentifier rdf:type owl:DatatypeProperty ;
+                                      rdfs:domain :UnitComposition ;
+                                      rdfs:range xsd:string ;
+                                      rdfs:comment "Short text holding the process number if necessary"@en ;
+                                      rdfs:label "unitComposition:compositionIdentifier"@en .
 
 
 ###  https://onerecord.iata.org/cargo/Value#unit
@@ -6152,7 +5699,7 @@ waybill:destinationCurrencyCode rdf:type owl:DatatypeProperty ;
                                 rdfs:domain :Waybill ;
                                 rdfs:range xsd:string ;
                                 rdfs:comment "ISO 3-letter currency code of destination. Refer to ISO 4217"@en ;
-                                rdfs:label "destinationCurrencyCode"@en .
+                                rdfs:label "waybill:destinationCurrencyCode"@en .
 
 
 ###  https://onerecord.iata.org/cargo/Waybill#destinationCurrencyRate
@@ -6252,6 +5799,28 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
 #################################################################
 #    Classes
 #################################################################
+
+###  https://onerecord.iata.org/cargo/ActivitySequence
+:ActivitySequence rdf:type owl:Class ;
+                  rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                    owl:onProperty activitySequence:activity ;
+                                    owl:allValuesFrom :LogisticsActivity
+                                  ] ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty activitySequence:activity ;
+                                    owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                  ] ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty activitySequence:sequenceNumber ;
+                                    owl:allValuesFrom xsd:string
+                                  ] ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty activitySequence:sequenceNumber ;
+                                    owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                  ] ;
+                  rdfs:comment "Embedded object to create a sequence of Activities in the context of a Service"@en ;
+                  rdfs:label "ActivitySequence"@en .
+
 
 ###  https://onerecord.iata.org/cargo/Actor
 :Actor rdf:type owl:Class ;
@@ -6557,7 +6126,7 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
 
 ###  https://onerecord.iata.org/cargo/Booking
 :Booking rdf:type owl:Class ;
-         rdfs:subClassOf :LogisticsObject ,
+         rdfs:subClassOf :LogisticsService ,
                          [ rdf:type owl:Restriction ;
                            owl:onProperty booking:bookingRequest ;
                            owl:allValuesFrom :BookingRequest
@@ -7010,10 +6579,6 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                 owl:allValuesFrom :Value
                               ] ,
                               [ rdf:type owl:Restriction ;
-                                owl:onProperty co2Emissions:transportMovement ;
-                                owl:allValuesFrom :TransportMovement
-                              ] ,
-                              [ rdf:type owl:Restriction ;
                                 owl:onProperty co2Emissions:calculatedEmissions ;
                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
                               ] ,
@@ -7142,39 +6707,16 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                 owl:versionInfo "v3.0 renamed from Characteristics"@en .
 
 
-###  https://onerecord.iata.org/cargo/Check
-:Check rdf:type owl:Class ;
-       rdfs:subClassOf :LogisticsActivity ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty check:checkExecution ;
-                         owl:allValuesFrom :CheckAction
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty check:checkedObject ;
-                         owl:allValuesFrom :LogisticsObject
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty check:checkedObject ;
-                         owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty check:checkType ;
-                         owl:allValuesFrom xsd:string
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty check:checkType ;
-                         owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                       ] ;
-       rdfs:comment "Activity to model generic checks for a specific LO"@en ;
-       rdfs:label "Check"@en .
-
-
 ###  https://onerecord.iata.org/cargo/CheckAction
 :CheckAction rdf:type owl:Class ;
              rdfs:subClassOf :LogisticsAction ,
                              [ rdf:type owl:Restriction ;
                                owl:onProperty checkAction:checkTotalResult ;
                                owl:allValuesFrom :CheckTotalResult
+                             ] ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty checkAction:checkedObject ;
+                               owl:allValuesFrom :LogisticsObject
                              ] ,
                              [ rdf:type owl:Restriction ;
                                owl:onProperty checkAction:checker ;
@@ -7189,6 +6731,10 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                owl:maxCardinality "1"^^xsd:nonNegativeInteger
                              ] ,
                              [ rdf:type owl:Restriction ;
+                               owl:onProperty checkAction:checkedObject ;
+                               owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                             ] ,
+                             [ rdf:type owl:Restriction ;
                                owl:onProperty checkAction:checker ;
                                owl:maxCardinality "1"^^xsd:nonNegativeInteger
                              ] ,
@@ -7196,7 +6742,7 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                owl:onProperty checkAction:usedTemplate ;
                                owl:maxCardinality "1"^^xsd:nonNegativeInteger
                              ] ;
-             rdfs:comment "Action to track a check including a checker, a template and a result"@en ;
+             rdfs:comment "Action to describe a check"@en ;
              rdfs:label "CheckAction"@en .
 
 
@@ -7216,15 +6762,7 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                  owl:allValuesFrom :Question
                                ] ,
                                [ rdf:type owl:Restriction ;
-                                 owl:onProperty checkTemplate:usedInCheckAction ;
-                                 owl:allValuesFrom :CheckAction
-                               ] ,
-                               [ rdf:type owl:Restriction ;
                                  owl:onProperty checkTemplate:legacyTemplate ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty checkTemplate:usedInCheckAction ;
                                  owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                ] ,
                                [ rdf:type owl:Restriction ;
@@ -7272,19 +6810,11 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                     owl:allValuesFrom :Person
                                   ] ,
                                   [ rdf:type owl:Restriction ;
-                                    owl:onProperty checkTotalResult:ofCheckAction ;
-                                    owl:allValuesFrom :CheckAction
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
                                     owl:onProperty checkTotalResult:resultValue ;
                                     owl:allValuesFrom :Value
                                   ] ,
                                   [ rdf:type owl:Restriction ;
                                     owl:onProperty checkTotalResult:certifiedBy ;
-                                    owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty checkTotalResult:ofCheckAction ;
                                     owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                   ] ,
                                   [ rdf:type owl:Restriction ;
@@ -7322,276 +6852,6 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                  owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                ] ;
                owl:deprecated "true"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonService
-:CommonService rdf:type owl:Class ;
-               rdfs:subClassOf :LogisticsService ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:finalLocation ;
-                                 owl:allValuesFrom :Location
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:originLocation ;
-                                 owl:allValuesFrom :Location
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:requestReference ;
-                                 owl:allValuesFrom :CommonServiceRequest
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:requestor ;
-                                 owl:allValuesFrom :Party
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:finalLocation ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:originLocation ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:requestReference ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:requestor ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:incoterms ;
-                                 owl:allValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:productDescription ;
-                                 owl:allValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceAgreementReference ;
-                                 owl:allValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceDescription ;
-                                 owl:allValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceName ;
-                                 owl:allValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceNature ;
-                                 owl:allValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceStatus ;
-                                 owl:allValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceSubtype ;
-                                 owl:allValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceType ;
-                                 owl:allValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:productDescription ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceAgreementReference ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceDescription ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceName ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceNature ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceStatus ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceSubtype ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty commonService:serviceType ;
-                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                               ] ;
-               rdfs:comment "Generic Service to model bundling a number of Activities"@en ;
-               rdfs:label "CommonService"@en .
-
-
-###  https://onerecord.iata.org/cargo/CommonServiceRequest
-:CommonServiceRequest rdf:type owl:Class ;
-                      rdfs:subClassOf :LogisticsObject ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:contactPersons ;
-                                        owl:allValuesFrom :Person
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:finalLocation ;
-                                        owl:allValuesFrom :Location
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:originLocation ;
-                                        owl:allValuesFrom :Location
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:parentActivity ;
-                                        owl:allValuesFrom :LogisticsActivity
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:provider ;
-                                        owl:allValuesFrom :Party
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:requestedActions ;
-                                        owl:allValuesFrom :LogisticsAction
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:requestor ;
-                                        owl:allValuesFrom :Party
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:serviceOptions ;
-                                        owl:allValuesFrom :CommonService
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:specialCharacteristics ;
-                                        owl:allValuesFrom :Characteristic
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:specialInstructions ;
-                                        owl:allValuesFrom :SpecialInstruction
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:finalLocation ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:originLocation ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:parentActivity ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:provider ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:requestedActions ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:requestor ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:incoterms ;
-                                        owl:allValuesFrom xsd:string
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:productDescription ;
-                                        owl:allValuesFrom xsd:string
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:requestDateTime ;
-                                        owl:allValuesFrom xsd:dateTime
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:requestStatus ;
-                                        owl:allValuesFrom xsd:string
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:responseDateTime ;
-                                        owl:allValuesFrom xsd:dateTime
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:responseStatus ;
-                                        owl:allValuesFrom xsd:string
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:serviceAgreementReference ;
-                                        owl:allValuesFrom xsd:string
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:serviceDescription ;
-                                        owl:allValuesFrom xsd:string
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:serviceName ;
-                                        owl:allValuesFrom xsd:string
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:serviceNature ;
-                                        owl:allValuesFrom xsd:string
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:serviceSubtype ;
-                                        owl:allValuesFrom xsd:string
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:serviceType ;
-                                        owl:allValuesFrom xsd:string
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:productDescription ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:requestDateTime ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:requestStatus ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:responseDateTime ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:responseStatus ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:serviceAgreementReference ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:serviceDescription ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:serviceName ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:serviceNature ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:serviceSubtype ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty commonServiceRequest:serviceType ;
-                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                      ] ;
-                      rdfs:comment "Generic Service Request to model requests for CommonServices and outsource Activities"@en ;
-                      rdfs:label "CommonServiceRequest"@en .
 
 
 ###  https://onerecord.iata.org/cargo/Company
@@ -7681,52 +6941,25 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                owl:deprecated "true"@en .
 
 
-###  https://onerecord.iata.org/cargo/ComplexActivity
-:ComplexActivity rdf:type owl:Class ;
-                 rdfs:subClassOf :LogisticsActivity ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty complexActivity:DelegatedServiceRequests ;
-                                   owl:allValuesFrom :CommonServiceRequest
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty complexActivity:execution ;
-                                   owl:allValuesFrom :LogisticsAction
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty complexActivity:involvedObjects ;
-                                   owl:allValuesFrom :PhysicalLogisticsObject
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty complexActivity:transportMeans ;
-                                   owl:allValuesFrom :TransportMeans
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty complexActivity:transportMeans ;
-                                   owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty complexActivity:complexActivitySubtype ;
-                                   owl:allValuesFrom xsd:string
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty complexActivity:complexActivityType ;
-                                   owl:allValuesFrom xsd:string
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty complexActivity:complexActivitySubtype ;
-                                   owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty complexActivity:complexActivityType ;
-                                   owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                 ] ;
-                 rdfs:comment "Activity to model generic activities on logistic objects"@en ;
-                 rdfs:label "ComplexActivity"@en .
-
-
 ###  https://onerecord.iata.org/cargo/CompositionAction
 :CompositionAction rdf:type owl:Class ;
                    rdfs:subClassOf :LogisticsAction ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty compositionAction:composedMaterials ;
+                                     owl:allValuesFrom :LoadingMaterial
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty compositionAction:composedPieces ;
+                                     owl:allValuesFrom :Piece
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty compositionAction:loadingUnit ;
+                                     owl:allValuesFrom :LoadingUnit
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty compositionAction:loadingUnit ;
+                                     owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                   ] ,
                                    [ rdf:type owl:Restriction ;
                                      owl:onProperty compositionAction:compositionType ;
                                      owl:allValuesFrom xsd:string
@@ -7735,7 +6968,7 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                      owl:onProperty compositionAction:compositionType ;
                                      owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                    ] ;
-                   rdfs:comment "Action to track build-up and break-down"@en ;
+                   rdfs:comment "Action to describe build-up or break-down of LoadingUnits"@en ;
                    rdfs:label "CompositionAction"@en .
 
 
@@ -8730,9 +7963,48 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                     rdfs:label "LiveAnimalsEpermit"@en .
 
 
+###  https://onerecord.iata.org/cargo/Loading
+:Loading rdf:type owl:Class ;
+         rdfs:subClassOf :LogisticsActivity ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty loading:loadingActions ;
+                           owl:allValuesFrom :LoadingAction
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty loading:loadingIdentifier ;
+                           owl:allValuesFrom xsd:string
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty loading:loadingIdentifier ;
+                           owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                         ] ;
+         rdfs:comment "Activity to describe onloading and offloading processes"@en ;
+         rdfs:label "Loading"@en .
+
+
 ###  https://onerecord.iata.org/cargo/LoadingAction
 :LoadingAction rdf:type owl:Class ;
                rdfs:subClassOf :LogisticsAction ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty loadingAction:loadedMaterials ;
+                                 owl:allValuesFrom :LoadingMaterial
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty loadingAction:loadedPieces ;
+                                 owl:allValuesFrom :Piece
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty loadingAction:loadedUnits ;
+                                 owl:allValuesFrom :LoadingUnit
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty loadingAction:transportMeans ;
+                                 owl:allValuesFrom :TransportMeans
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty loadingAction:transportMeans ;
+                                 owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                               ] ,
                                [ rdf:type owl:Restriction ;
                                  owl:onProperty loadingAction:loadingPosition ;
                                  owl:allValuesFrom xsd:string
@@ -8749,44 +8021,8 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                  owl:onProperty loadingAction:loadingType ;
                                  owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                ] ;
-               rdfs:comment "Action to track onloading and offloading"@en ;
+               rdfs:comment "Action to describe onloading or offloading TransportMeans"@en ;
                rdfs:label "LoadingAction"@en .
-
-
-###  https://onerecord.iata.org/cargo/LoadingActivity
-:LoadingActivity rdf:type owl:Class ;
-                 rdfs:subClassOf :LogisticsActivity ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty loadingActivity:forTransportMovements ;
-                                   owl:allValuesFrom :TransportMovement
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty loadingActivity:loadedObject ;
-                                   owl:allValuesFrom [ rdf:type owl:Class ;
-                                                       owl:unionOf ( :LoadingMaterial
-                                                                     :LoadingUnit
-                                                                     :Piece
-                                                                   )
-                                                     ]
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty loadingActivity:loadingExecution ;
-                                   owl:allValuesFrom :LoadingAction
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty loadingActivity:transportMeans ;
-                                   owl:allValuesFrom :TransportMeans
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty loadingActivity:loadedObject ;
-                                   owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty loadingActivity:transportMeans ;
-                                   owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                 ] ;
-                 rdfs:comment "Activity to model onloading and offloading as Sub-Activity for one or more TransportMovements"@en ;
-                 rdfs:label "LoadingActivity"@en .
 
 
 ###  https://onerecord.iata.org/cargo/LoadingMaterial
@@ -8854,10 +8090,6 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                              [ rdf:type owl:Restriction ;
                                owl:onProperty loadingUnit:tareWeight ;
                                owl:allValuesFrom :Value
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty loadingUnit:transportMovements ;
-                               owl:allValuesFrom :TransportMovement
                              ] ,
                              [ rdf:type owl:Restriction ;
                                owl:onProperty loadingUnit:tareWeight ;
@@ -8996,6 +8228,10 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                             owl:allValuesFrom :Address
                           ] ,
                           [ rdf:type owl:Restriction ;
+                            owl:onProperty location:forActions ;
+                            owl:allValuesFrom :LogisticsAction
+                          ] ,
+                          [ rdf:type owl:Restriction ;
                             owl:onProperty location:geolocation ;
                             owl:allValuesFrom :Geolocation
                           ] ,
@@ -9039,27 +8275,19 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
 :LogisticsAction rdf:type owl:Class ;
                  rdfs:subClassOf :LogisticsObject ,
                                  [ rdf:type owl:Restriction ;
-                                   owl:onProperty logisticsAction:contactPersons ;
-                                   owl:allValuesFrom :Person
+                                   owl:onProperty logisticsAction:contactDetails ;
+                                   owl:allValuesFrom :ContactDetail
                                  ] ,
                                  [ rdf:type owl:Restriction ;
-                                   owl:onProperty logisticsAction:limitedToObjects ;
-                                   owl:allValuesFrom :LogisticsObject
+                                   owl:onProperty logisticsAction:contactPersons ;
+                                   owl:allValuesFrom :Person
                                  ] ,
                                  [ rdf:type owl:Restriction ;
                                    owl:onProperty logisticsAction:location ;
                                    owl:allValuesFrom :Location
                                  ] ,
                                  [ rdf:type owl:Restriction ;
-                                   owl:onProperty logisticsAction:operator ;
-                                   owl:allValuesFrom :Party
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty logisticsAction:otherParticipants ;
-                                   owl:allValuesFrom :Party
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty logisticsAction:relatedActivity ;
+                                   owl:onProperty logisticsAction:servedActivity ;
                                    owl:allValuesFrom :LogisticsActivity
                                  ] ,
                                  [ rdf:type owl:Restriction ;
@@ -9067,15 +8295,15 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                    owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                  ] ,
                                  [ rdf:type owl:Restriction ;
-                                   owl:onProperty logisticsAction:operator ;
+                                   owl:onProperty logisticsAction:servedActivity ;
                                    owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                  ] ,
                                  [ rdf:type owl:Restriction ;
-                                   owl:onProperty logisticsAction:relatedActivity ;
-                                   owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                   owl:onProperty logisticsAction:actionEndTime ;
+                                   owl:allValuesFrom xsd:dateTime
                                  ] ,
                                  [ rdf:type owl:Restriction ;
-                                   owl:onProperty logisticsAction:actionTime ;
+                                   owl:onProperty logisticsAction:actionStartTime ;
                                    owl:allValuesFrom xsd:dateTime
                                  ] ,
                                  [ rdf:type owl:Restriction ;
@@ -9083,14 +8311,18 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                    owl:allValuesFrom xsd:string
                                  ] ,
                                  [ rdf:type owl:Restriction ;
-                                   owl:onProperty logisticsAction:actionTime ;
+                                   owl:onProperty logisticsAction:actionEndTime ;
+                                   owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty logisticsAction:actionStartTime ;
                                    owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                  ] ,
                                  [ rdf:type owl:Restriction ;
                                    owl:onProperty logisticsAction:actionType ;
                                    owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                  ] ;
-                 rdfs:comment "Superclass: LogisticsAction describes an action that is performed on all (or some) LogisticsObjects involved in an Activity by one Party at one time on one place in the context of a LogisticsActivity"@en ;
+                 rdfs:comment "Superclass: LogisticsAction is a specific task with a specific result performed on one or more physical LOs by one party in the context of an Activity"@en ;
                  rdfs:label "LogisticsAction"@en .
 
 
@@ -9098,74 +8330,30 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
 :LogisticsActivity rdf:type owl:Class ;
                    rdfs:subClassOf :LogisticsObject ,
                                    [ rdf:type owl:Restriction ;
+                                     owl:onProperty logisticsActivity:checkActions ;
+                                     owl:allValuesFrom :CheckAction
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty logisticsActivity:contactDetails ;
+                                     owl:allValuesFrom :ContactDetail
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
                                      owl:onProperty logisticsActivity:contactPersons ;
                                      owl:allValuesFrom :Person
                                    ] ,
                                    [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:operator ;
-                                     owl:allValuesFrom :Party
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:orchestrator ;
-                                     owl:allValuesFrom :Party
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:otherParticipants ;
-                                     owl:allValuesFrom :Party
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:relatedServices ;
+                                     owl:onProperty logisticsActivity:servedServices ;
                                      owl:allValuesFrom :LogisticsService
                                    ] ,
                                    [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:specialCharacteristics ;
-                                     owl:allValuesFrom :Characteristic
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:specialInstructions ;
-                                     owl:allValuesFrom :SpecialInstruction
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:operator ;
-                                     owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:orchestrator ;
-                                     owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:activityName ;
-                                     owl:allValuesFrom xsd:string
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
                                      owl:onProperty logisticsActivity:executionStatus ;
                                      owl:allValuesFrom xsd:string
                                    ] ,
                                    [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:processReference ;
-                                     owl:allValuesFrom xsd:string
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:sequenceNumber ;
-                                     owl:allValuesFrom xsd:integer
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:activityName ;
-                                     owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
                                      owl:onProperty logisticsActivity:executionStatus ;
-                                     owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:processReference ;
-                                     owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty logisticsActivity:sequenceNumber ;
                                      owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                    ] ;
-                   rdfs:comment "Superclass: LogisticsActivity describes a sequence of Actions executed on one or more LogisticsObjects that is orchestrated by one Party and that can be performed by multiple Parties"@en ;
+                   rdfs:comment "Superclass: LogisticsActivity is a scheduled set of tasks that is executed as part of one or more Services"@en ;
                    rdfs:label "LogisticsActivity"@en .
 
 
@@ -9266,6 +8454,10 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                    owl:allValuesFrom :IotDevice
                                  ] ,
                                  [ rdf:type owl:Restriction ;
+                                   owl:onProperty logisticsObject:checks ;
+                                   owl:allValuesFrom :CheckAction
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
                                    owl:onProperty logisticsObject:events ;
                                    owl:allValuesFrom :LogisticsEvent
                                  ] ,
@@ -9297,46 +8489,18 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
 :LogisticsService rdf:type owl:Class ;
                   rdfs:subClassOf :LogisticsObject ,
                                   [ rdf:type owl:Restriction ;
-                                    owl:onProperty logisticsService:activities ;
-                                    owl:allValuesFrom :LogisticsActivity
+                                    owl:onProperty logisticsService:activitySequences ;
+                                    owl:allValuesFrom :ActivitySequence
+                                  ] ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty logisticsService:contactDetails ;
+                                    owl:allValuesFrom :ContactDetail
                                   ] ,
                                   [ rdf:type owl:Restriction ;
                                     owl:onProperty logisticsService:contactPersons ;
                                     owl:allValuesFrom :Person
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty logisticsService:provider ;
-                                    owl:allValuesFrom :Party
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty logisticsService:specialCharacteristics ;
-                                    owl:allValuesFrom :Characteristic
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty logisticsService:specialInstructions ;
-                                    owl:allValuesFrom :SpecialInstruction
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty logisticsService:provider ;
-                                    owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty logisticsService:executionStatus ;
-                                    owl:allValuesFrom xsd:string
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty logisticsService:requestMatchIndicator ;
-                                    owl:allValuesFrom xsd:boolean
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty logisticsService:executionStatus ;
-                                    owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty logisticsService:requestMatchIndicator ;
-                                    owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                   ] ;
-                  rdfs:comment "Superclass: LogisticsService describe one or more activities on one or more logistics objects offered by one party to another party with specific parameters"@en ;
+                  rdfs:comment "Superclass: LogisticsService is a sequence of Activities provided by one Party to another"@en ;
                   rdfs:label "LogisticsService"@en .
 
 
@@ -9407,6 +8571,14 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
 :MovementAction rdf:type owl:Class ;
                 rdfs:subClassOf :LogisticsAction ,
                                 [ rdf:type owl:Restriction ;
+                                  owl:onProperty movementAction:transportMeans ;
+                                  owl:allValuesFrom :TransportMeans
+                                ] ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty movementAction:transportMeans ;
+                                  owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                ] ,
+                                [ rdf:type owl:Restriction ;
                                   owl:onProperty movementAction:movementType ;
                                   owl:allValuesFrom xsd:string
                                 ] ,
@@ -9414,7 +8586,7 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                   owl:onProperty movementAction:movementType ;
                                   owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                 ] ;
-                rdfs:comment "Action to track arrival and depature"@en ;
+                rdfs:comment "Action to describe movements of TransportMeans"@en ;
                 rdfs:label "MovementAction"@en .
 
 
@@ -9689,12 +8861,12 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
 :PhysicalLogisticsObject rdf:type owl:Class ;
                          rdfs:subClassOf :LogisticsObject ,
                                          [ rdf:type owl:Restriction ;
-                                           owl:onProperty physicalLogisticsObject:attachedIotDevices ;
-                                           owl:allValuesFrom :IotDevice
+                                           owl:onProperty physicalLogisticsObject:actions ;
+                                           owl:allValuesFrom :LogisticsAction
                                          ] ,
                                          [ rdf:type owl:Restriction ;
-                                           owl:onProperty physicalLogisticsObject:involvedInActivities ;
-                                           owl:allValuesFrom :LogisticsActivity
+                                           owl:onProperty physicalLogisticsObject:attachedIotDevices ;
+                                           owl:allValuesFrom :IotDevice
                                          ] ;
                          rdfs:comment "Superclass: PhysicalLogisticObjects represent the digital twin of an object in the logistics suppy chain that physically exist"@en ;
                          rdfs:label "PhysicalLogisticsObject"@en .
@@ -9762,10 +8934,6 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                        [ rdf:type owl:Restriction ;
                          owl:onProperty piece:securityDeclaration ;
                          owl:allValuesFrom :SecurityDeclaration
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty piece:transportMovements ;
-                         owl:allValuesFrom :TransportMovement
                        ] ,
                        [ rdf:type owl:Restriction ;
                          owl:onProperty piece:uldReference ;
@@ -10987,6 +10155,11 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                             owl:maxCardinality "1"^^xsd:nonNegativeInteger
                           ] ,
                           [ rdf:type owl:Restriction ;
+                            owl:onProperty shipment:totalVolumetricWeight ;
+                            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onClass :VolumetricWeight
+                          ] ,
+                          [ rdf:type owl:Restriction ;
                             owl:onProperty shipment:waybill ;
                             owl:maxCardinality "1"^^xsd:nonNegativeInteger
                           ] ,
@@ -11031,6 +10204,10 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                             owl:maxCardinality "1"^^xsd:nonNegativeInteger
                           ] ,
                           [ rdf:type owl:Restriction ;
+                            owl:onProperty shipment:incoterms ;
+                            owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                          ] ,
+                          [ rdf:type owl:Restriction ;
                             owl:onProperty shipment:otherChargesIndicator ;
                             owl:maxCardinality "1"^^xsd:nonNegativeInteger
                           ] ,
@@ -11043,10 +10220,6 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                             owl:maxCardinality "1"^^xsd:nonNegativeInteger
                           ] ,
                           [ rdf:type owl:Restriction ;
-                            owl:onProperty shipment:totalVolumetricWeight ;
-                            owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                          ] ,
-                          [ rdf:type owl:Restriction ;
                             owl:onProperty shipment:weightValuationIndicator ;
                             owl:maxCardinality "1"^^xsd:nonNegativeInteger
                           ] ;
@@ -11054,31 +10227,32 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
           rdfs:label "Shipment"@en .
 
 
-###  https://onerecord.iata.org/cargo/SpecialInstruction
-:SpecialInstruction rdf:type owl:Class ;
-                    rdfs:subClassOf [ rdf:type owl:Restriction ;
-                                      owl:onProperty specialInstruction:description ;
-                                      owl:allValuesFrom xsd:string
-                                    ] ,
-                                    [ rdf:type owl:Restriction ;
-                                      owl:onProperty specialInstruction:instructionCode ;
-                                      owl:allValuesFrom xsd:string
-                                    ] ,
-                                    [ rdf:type owl:Restriction ;
-                                      owl:onProperty specialInstruction:description ;
-                                      owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                    ] ,
-                                    [ rdf:type owl:Restriction ;
-                                      owl:onProperty specialInstruction:instructionCode ;
-                                      owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                    ] ;
-                    rdfs:comment "SpecialInstructions to detail a Service, ServiceRequest or Activity"@en ;
-                    rdfs:label "SpecialInstruction"@en .
+###  https://onerecord.iata.org/cargo/Storing
+:Storing rdf:type owl:Class ;
+         rdfs:subClassOf :LogisticsActivity ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty storing:storingActions ;
+                           owl:allValuesFrom :StoringAction
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty storing:storingIdentifier ;
+                           owl:allValuesFrom xsd:string
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty storing:storingIdentifier ;
+                           owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                         ] ;
+         rdfs:comment "Activity to describe storing processes"@en ;
+         rdfs:label "Storing"@en .
 
 
 ###  https://onerecord.iata.org/cargo/StoringAction
 :StoringAction rdf:type owl:Class ;
                rdfs:subClassOf :LogisticsAction ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty storingAction:storedObjects ;
+                                 owl:allValuesFrom :PhysicalLogisticsObject
+                               ] ,
                                [ rdf:type owl:Restriction ;
                                  owl:onProperty storingAction:storagePlace ;
                                  owl:allValuesFrom xsd:string
@@ -11095,44 +10269,13 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                  owl:onProperty storingAction:storeType ;
                                  owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                ] ;
-               rdfs:comment "Action to track store-in and store-out"@en ;
+               rdfs:comment "Action to describe store-in or store-out"@en ;
                rdfs:label "StoringAction"@en .
-
-
-###  https://onerecord.iata.org/cargo/StoringActivity
-:StoringActivity rdf:type owl:Class ;
-                 rdfs:subClassOf :LogisticsActivity ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty storingActivity:storageExecution ;
-                                   owl:allValuesFrom :StoringAction
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty storingActivity:storageLocation ;
-                                   owl:allValuesFrom :Location
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty storingActivity:storedObject ;
-                                   owl:allValuesFrom :PhysicalLogisticsObject
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty storingActivity:storageLocation ;
-                                   owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty storingActivity:storedObject ;
-                                   owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                 ] ;
-                 rdfs:comment "Activity to model store in and store out of LogisticsObjects"@en ;
-                 rdfs:label "StoringActivity"@en .
 
 
 ###  https://onerecord.iata.org/cargo/TransportMeans
 :TransportMeans rdf:type owl:Class ;
                 rdfs:subClassOf :PhysicalLogisticsObject ,
-                                [ rdf:type owl:Restriction ;
-                                  owl:onProperty transportMeans:transportMovement ;
-                                  owl:allValuesFrom :TransportMovement
-                                ] ,
                                 [ rdf:type owl:Restriction ;
                                   owl:onProperty transportMeans:transportOrganization ;
                                   owl:allValuesFrom :Company
@@ -11201,6 +10344,10 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
 :TransportMovement rdf:type owl:Class ;
                    rdfs:subClassOf :LogisticsActivity ,
                                    [ rdf:type owl:Restriction ;
+                                     owl:onProperty transportMovement:actions ;
+                                     owl:allValuesFrom :LogisticsAction
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
                                      owl:onProperty transportMovement:arrivalLocation ;
                                      owl:allValuesFrom :Location
                                    ] ,
@@ -11209,7 +10356,7 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                      owl:allValuesFrom :CO2Emissions
                                    ] ,
                                    [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:departureLocation ;
+                                     owl:onProperty transportMovement:depatureLocation ;
                                      owl:allValuesFrom :Location
                                    ] ,
                                    [ rdf:type owl:Restriction ;
@@ -11221,10 +10368,6 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                      owl:allValuesFrom :Value
                                    ] ,
                                    [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:externalReferences ;
-                                     owl:allValuesFrom :ExternalReference
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
                                      owl:onProperty transportMovement:fuelAmountCalculated ;
                                      owl:allValuesFrom :Value
                                    ] ,
@@ -11233,43 +10376,11 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                      owl:allValuesFrom :Value
                                    ] ,
                                    [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:loadingActivities ;
-                                     owl:allValuesFrom :LoadingActivity
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:movementExecution ;
-                                     owl:allValuesFrom :MovementAction
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:movementTimes ;
-                                     owl:allValuesFrom :MovementTimes
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:payload ;
-                                     owl:allValuesFrom :Value
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:transportMeans ;
-                                     owl:allValuesFrom :TransportMeans
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:transportMeansOperators ;
-                                     owl:allValuesFrom :Person
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:transportedPieces ;
-                                     owl:allValuesFrom :Piece
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:transportedUlds ;
-                                     owl:allValuesFrom :LoadingUnit
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
                                      owl:onProperty transportMovement:arrivalLocation ;
                                      owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                    ] ,
                                    [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:departureLocation ;
+                                     owl:onProperty transportMovement:depatureLocation ;
                                      owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                    ] ,
                                    [ rdf:type owl:Restriction ;
@@ -11281,10 +10392,6 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                      owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                    ] ,
                                    [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:externalReferences ;
-                                     owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
                                      owl:onProperty transportMovement:fuelAmountCalculated ;
                                      owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                    ] ,
@@ -11293,10 +10400,6 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                      owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                    ] ,
                                    [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:transportMeans ;
-                                     owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
                                      owl:onProperty transportMovement:fuelType ;
                                      owl:allValuesFrom xsd:string
                                    ] ,
@@ -11317,10 +10420,6 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                      owl:allValuesFrom xsd:string
                                    ] ,
                                    [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:unplannedStop ;
-                                     owl:allValuesFrom xsd:string
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
                                      owl:onProperty transportMovement:fuelType ;
                                      owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                    ] ,
@@ -11338,50 +10437,28 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
                                    ] ,
                                    [ rdf:type owl:Restriction ;
                                      owl:onProperty transportMovement:transportIdentifier ;
-                                     owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty transportMovement:unplannedStop ;
                                      owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                    ] ;
-                   rdfs:comment "Activity to model transports, replaces the TransportSegment in v1.1 and above"@en ;
+                   rdfs:comment "Activity to describe transports, replaces the TransportSegment in v1.1 and above"@en ;
                    rdfs:label "TransportMovement"@en .
-
-[ rdf:type owl:Axiom ;
-   owl:annotatedSource :TransportMovement ;
-   owl:annotatedProperty rdfs:subClassOf ;
-   owl:annotatedTarget [ rdf:type owl:Restriction ;
-                         owl:onProperty transportMovement:co2Emissions ;
-                         owl:allValuesFrom :CO2Emissions
-                       ] ;
-   rdfs:comment "Change of data type to object CO2Emissions"@en
- ] .
 
 
 ###  https://onerecord.iata.org/cargo/UnitComposition
 :UnitComposition rdf:type owl:Class ;
                  rdfs:subClassOf :LogisticsActivity ,
                                  [ rdf:type owl:Restriction ;
-                                   owl:onProperty unitComposition:composedObjects ;
-                                   owl:allValuesFrom [ rdf:type owl:Class ;
-                                                       owl:unionOf ( :LoadingMaterial
-                                                                     :Piece
-                                                                   )
-                                                     ]
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty unitComposition:compositionExecution ;
+                                   owl:onProperty unitComposition:compositionActions ;
                                    owl:allValuesFrom :CompositionAction
                                  ] ,
                                  [ rdf:type owl:Restriction ;
-                                   owl:onProperty unitComposition:container ;
-                                   owl:allValuesFrom :LoadingUnit
+                                   owl:onProperty unitComposition:compositionIdentifier ;
+                                   owl:allValuesFrom xsd:string
                                  ] ,
                                  [ rdf:type owl:Restriction ;
-                                   owl:onProperty unitComposition:container ;
+                                   owl:onProperty unitComposition:compositionIdentifier ;
                                    owl:maxCardinality "1"^^xsd:nonNegativeInteger
                                  ] ;
-                 rdfs:comment "Activity to link and unlink a Piece or LoadingMaterial and a LoadingUnit through build up and break down"@en ;
+                 rdfs:comment "Activity to describe build-up and break-down processes"@en ;
                  rdfs:label "UnitComposition"@en .
 
 
@@ -11633,13 +10710,9 @@ waybill:waybillType rdf:type owl:DatatypeProperty ;
 #    Annotations
 #################################################################
 
-shipment:deliveryLocation rdfs:comment "Name and UN/LOCODE code of the point or port of departure, shipment or destination, as required under the applicable delivery term"@en ;
+shipment:deliveryLocation owl:deprecated "true"^^xsd:boolean ;
+                          rdfs:comment "Name and UN/LOCODE code of the point or port of departure, shipment or destination, as required under the applicable delivery term"@en ;
                           rdfs:label "shipment:deliveryLocation"@en .
-
-
-shipment:totalVolumetricWeight owl:versionInfo "v3.0 renamed from shipment:volumetricWeight"@en ;
-                               rdfs:label "shipment:totalVolumetricWeight"@en ;
-                               rdfs:comment "Volumetric weight details"@en .
 
 
 ###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
